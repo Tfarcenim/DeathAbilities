@@ -48,6 +48,10 @@ subprojects {
             name = 'BlameJared Maven (JEI / CraftTweaker / Bookshelf)'
             url = 'https://maven.blamejared.com'
         }
+        maven {
+            url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        }
+
     }
 
     tasks.withType(JavaCompile).configureEach {
