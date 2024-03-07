@@ -1,11 +1,17 @@
 package tfar.deathabilities;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
+import tfar.deathabilities.network.ModPacket;
+import tfar.deathabilities.network.S2CActivateItemPacket;
 import tfar.deathabilities.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.slf4j.Logger;
@@ -29,6 +35,15 @@ public class DeathAbilities {
         //Services.PLATFORM.superRegister(ModCreativeTabs.class, BuiltInRegistries.CREATIVE_MODE_TAB, CreativeModeTab.class);
         //Services.PLATFORM.superRegister(ModEnchantments.class, BuiltInRegistries.ENCHANTMENT, Enchantment.class);
         Services.PLATFORM.superRegister(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE, EntityType.class);
+    }
+
+    public static void onDeath(DamageSource source, LivingEntity living) {
+        if (living instanceof Player player) {
+            DeathInfo deathInfo = DeathInfo.getDeathInfo(source);
+            if (deathInfo != null) {
+                Services.PLATFORM.sendToClient(new S2CActivateItemPacket(deathInfo.icon().getDefaultInstance()), ModPacket.activate_item,(ServerPlayer) player);
+            }
+        }
     }
 }
 
@@ -61,19 +76,19 @@ public class DeathAbilities {
 //		- anything in the squid ink vacinity gets glowing effect for me so that i can see them (i dont get glowing effect if im in the ink tho)
 //		- the squids also get dolphins grace/ speed 2 and auto aggro on hunters
 //
-//	- i have a water wand i can right click two points to fill in the space between with water (works like world edit tool with /fill but only with water)
+//todo	- i have a water wand i can right click two points to fill in the space between with water (works like world edit tool with /fill but only with water)
 //		- can place water in nether
 //		- uses replace function when filling so it will replace blocks and things like lava with water
 //	- have infinite breath under water
 //
 //===================================================================================================================
 //
-//Earth death = suffocate in gravel or sand (gnome)
+//todo Earth death = suffocate in gravel or sand (gnome)
 //
-//- can convert the ground under hunters into quicksand by throwing a "sand bomb"
+//todo - can convert the ground under hunters into quicksand by throwing a "sand bomb"
 //	- can just be an egg retextured into something else
 //
-//- sandfish
+//todo - sandfish
 //	- silver fish retextured/ modeled to look like sand worms
 //	- they pop out of the ground where im looking when i activate the power via keybind
 //	- they start rapidly "eating" the ground under the feet of the hunters
@@ -81,7 +96,7 @@ public class DeathAbilities {
 //
 //===================================================================================================================
 //
-//die to Fire or lava (immortal pheonix)
+//todo die to Fire or lava (immortal pheonix)
 //	- turn into a flying firey mist
 //	- fire heals me now/ magma blocks/ lava
 //	- my fire effects are permenant fire effects aka you can't put them out even with water

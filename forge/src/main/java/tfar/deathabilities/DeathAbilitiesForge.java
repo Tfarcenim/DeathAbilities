@@ -3,17 +3,24 @@ package tfar.deathabilities;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.deathabilities.client.DeathAbilitiesClient;
 import tfar.deathabilities.client.DeathAbilitiesClientForge;
+import tfar.deathabilities.data.Datagen;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.init.ModEntityTypes;
+import tfar.deathabilities.network.PacketHandlerForge;
 import tfar.deathabilities.platform.Services;
 
 import java.util.HashMap;
@@ -32,12 +39,22 @@ public class DeathAbilitiesForge {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::register);
         bus.addListener(this::attributes);
+        bus.addListener(Datagen::gather);
+        bus.addListener(this::commonSetup);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::onDeath);
         if (Services.PLATFORM.isPhysicalClient()) {
             bus.addListener(DeathAbilitiesClientForge::registerRenderers);
         }
         // Use Forge to bootstrap the Common mod.
         DeathAbilities.init();
-        
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        PacketHandlerForge.registerMessages();
+    }
+
+    private void onDeath(LivingDamageEvent event) {
+        DeathAbilities.onDeath(event.getSource(),event.getEntity());
     }
 
     public static Map<Registry<?>, List<Pair<ResourceLocation, Supplier<?>>>> registerLater = new HashMap<>();

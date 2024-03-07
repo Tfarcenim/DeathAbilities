@@ -3,14 +3,18 @@ package tfar.deathabilities.platform;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.network.NetworkDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.DeathAbilitiesForge;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.entity.DolphinWithLegsEntityGeo;
+import tfar.deathabilities.network.PacketHandlerForge;
+import tfar.deathabilities.network.S2CModPacket;
 import tfar.deathabilities.platform.services.IPlatformHelper;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
@@ -67,5 +71,10 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public boolean isPhysicalClient() {
         return FMLEnvironment.dist.isClient();
+    }
+
+    @Override
+    public void sendToClient(S2CModPacket msg, ResourceLocation channel, ServerPlayer player) {
+        PacketHandlerForge.sendToClient(msg,player);
     }
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,11 +24,12 @@ public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerR
     public DolphinWithLegsEntity(EntityType<? extends Mob> $$0, Level $$1) {
         super($$0, $$1);
         this.setMaxUpStep(1.0F);
+        setInvulnerable(true);
     }
 
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20).add(Attributes.MOVEMENT_SPEED, 1.35 * 0.25).add(Attributes.ATTACK_DAMAGE, 3);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30).add(Attributes.MOVEMENT_SPEED, 1.35 * 0.25).add(Attributes.ATTACK_DAMAGE, 3);
     }
 
     @Nullable
@@ -92,6 +94,11 @@ public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerR
         return new Vec3($$2, 0.0, $$3);
     }
 
+    @Override
+    protected float getRiddenSpeed(Player pPlayer) {
+        return (float)this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+    }
+
 
     @Override
     public void addAdditionalSaveData(CompoundTag $$0) {
@@ -113,6 +120,41 @@ public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerR
             }
             return null;
         }
+    }
+
+    @Override
+    protected void tickRidden(Player pPlayer, Vec3 pTravelVector) {
+        super.tickRidden(pPlayer, pTravelVector);
+        Vec2 vec2 = this.getRiddenRotation(pPlayer);
+        this.setRot(vec2.y, vec2.x);
+        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+        if (this.isControlledByLocalInstance()) {
+
+
+            if (this.onGround()) {
+                this.setIsJumping(false);
+              //  if (this.playerJumpPendingScale > 0.0F && !this.isJumping()) {
+              //      this.executeRidersJump(this.playerJumpPendingScale, pTravelVector);
+              //  }
+
+               // this.playerJumpPendingScale = 0.0F;
+            }
+        }
+
+    }
+    protected boolean isJumping;
+
+    public boolean isJumping() {
+        return this.isJumping;
+    }
+
+
+    public void setIsJumping(boolean pJumping) {
+        this.isJumping = pJumping;
+    }
+
+    protected Vec2 getRiddenRotation(LivingEntity pEntity) {
+        return new Vec2(pEntity.getXRot() * 0.5F, pEntity.getYRot());
     }
 
     public void setOwnerUUID(@Nullable UUID $$0) {
