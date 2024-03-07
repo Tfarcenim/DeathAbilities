@@ -61,7 +61,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public EntityType<? extends DolphinWithLegsEntity> getType() {
         return EntityType.Builder.of(DolphinWithLegsEntityGeo::new, MobCategory.MISC)
-                .sized(1,1).build("");
+                .sized(1,1.5f).build("");
     }
 
     @Override

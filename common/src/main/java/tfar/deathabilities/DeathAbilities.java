@@ -45,7 +45,7 @@ public class DeathAbilities {
 //
 //die by drowning/ water (call of the ocean)
 //
-//- can summon a laser dolphin that has legs and can walk/ run around
+//todo- can summon a laser dolphin that has legs and can walk/ run around
 //	- i can ride them by right clicking them, and they are as fast as the fastest horses and is invincible?
 //	- it shoots its laser at things infront has a 90 degree view angle so it isnt shooting behind it or anything
 //		- only shoots players and mobs that are aggro'd at me so not sheep or even zombie pigman etc...
@@ -56,7 +56,7 @@ public class DeathAbilities {
 //	- dolphin has same health as highest health horse and same run speed as fastest horse
 //	- dolphin is summoned via an item in my inventory when placed the item goes on cooldown so when the dolphin dies i can resummon it just have to wait for cooldown to finish
 //
-//	- i can summon an army of squids in the water to attack for me
+//todo	- i can summon an army of squids in the water to attack for me
 //		- when summoned they shoot out tons of ink (just make a cloud effect using squid ink the the region they get summoned)
 //		- anything in the squid ink vacinity gets glowing effect for me so that i can see them (i dont get glowing effect if im in the ink tho)
 //		- the squids also get dolphins grace/ speed 2 and auto aggro on hunters
