@@ -16,12 +16,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerRideableJumping {
+public class DolphinWithLegsEntity extends PathfinderMob implements OwnableEntity, PlayerRideableJumping {
 
     @Nullable
     private UUID owner;
 
-    public DolphinWithLegsEntity(EntityType<? extends Mob> $$0, Level $$1) {
+    public DolphinWithLegsEntity(EntityType<? extends PathfinderMob> $$0, Level $$1) {
         super($$0, $$1);
         this.setMaxUpStep(1.0F);
         setInvulnerable(true);
@@ -30,6 +30,11 @@ public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerR
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30).add(Attributes.MOVEMENT_SPEED, 1.35 * 0.25).add(Attributes.ATTACK_DAMAGE, 3);
+    }
+
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 
     @Nullable
@@ -41,6 +46,11 @@ public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerR
     @Override
     public void onPlayerJump(int var1) {
 
+    }
+
+    @Override
+    protected float getWaterSlowDown() {
+        return .99f;
     }
 
     @Override
@@ -94,6 +104,7 @@ public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerR
         return new Vec3($$2, 0.0, $$3);
     }
 
+
     @Override
     protected float getRiddenSpeed(Player pPlayer) {
         return (float)this.getAttributeValue(Attributes.MOVEMENT_SPEED);
@@ -123,11 +134,47 @@ public class DolphinWithLegsEntity extends Mob implements OwnableEntity, PlayerR
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        updatePose();
+    }
+
+    protected static final EntityDimensions SWIMMING_DIMENSIONS = EntityDimensions.fixed(0.75F, 0.75F);
+
+    @Override
+    public EntityDimensions getDimensions(Pose $$0) {
+        return $$0 == Pose.SWIMMING ? SWIMMING_DIMENSIONS : super.getDimensions($$0);
+    }
+
+    @Override
+    public double getPassengersRidingOffset() {
+        Pose pose = getPose();
+        return pose ==  Pose.SWIMMING ?  1.5 * this.getDimensions(pose).height : super.getPassengersRidingOffset();
+    }
+
+    protected void updatePose() {
+        if (isInWater()) {
+            setPose(Pose.SWIMMING);
+        } else {
+            setPose(Pose.STANDING);
+        }
+    }
+
+    @Override
     protected void tickRidden(Player pPlayer, Vec3 pTravelVector) {
         super.tickRidden(pPlayer, pTravelVector);
+
         Vec2 vec2 = this.getRiddenRotation(pPlayer);
         this.setRot(vec2.y, vec2.x);
         this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+
+        if (isInWater()  && pPlayer.isInWater()) {
+
+            double y = pPlayer.getXRot();
+            double yVel = -Math.sin(y * Math.PI / 180) / 4;
+            setDeltaMovement(getDeltaMovement().x, yVel, getDeltaMovement().z);
+        }
+
         if (this.isControlledByLocalInstance()) {
 
 
