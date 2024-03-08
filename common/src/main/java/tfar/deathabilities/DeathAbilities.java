@@ -61,7 +61,8 @@ public class DeathAbilities {
 //die by drowning/ water (call of the ocean)
 //
 //todo- can summon a laser dolphin that has legs and can walk/ run around
-//	- i can ride them by right clicking them, and they are as fast as the fastest horses and is invincible?
+
+//todo	- i can ride them by right clicking them, and they are as fast as the fastest horses and is invincible?
 //	- it shoots its laser at things infront has a 90 degree view angle so it isnt shooting behind it or anything
 //		- only shoots players and mobs that are aggro'd at me so not sheep or even zombie pigman etc...
 //	- they can swim really fast in water
