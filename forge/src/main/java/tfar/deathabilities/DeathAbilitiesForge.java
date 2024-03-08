@@ -4,18 +4,16 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
-import tfar.deathabilities.client.DeathAbilitiesClient;
 import tfar.deathabilities.client.DeathAbilitiesClientForge;
 import tfar.deathabilities.data.Datagen;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
@@ -42,6 +40,7 @@ public class DeathAbilitiesForge {
         bus.addListener(Datagen::gather);
         bus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::onDeath);
+        MinecraftForge.EVENT_BUS.addListener(this::commands);
         if (Services.PLATFORM.isPhysicalClient()) {
             bus.addListener(DeathAbilitiesClientForge::registerRenderers);
         }
@@ -49,6 +48,9 @@ public class DeathAbilitiesForge {
         DeathAbilities.init();
     }
 
+    private void commands(RegisterCommandsEvent event) {
+        DeathAbilitiesCommands.register(event.getDispatcher());
+    }
     private void commonSetup(FMLCommonSetupEvent event) {
         PacketHandlerForge.registerMessages();
     }

@@ -41,7 +41,7 @@ public class DeathAbilities {
         if (living instanceof Player player) {
             DeathInfo deathInfo = DeathInfo.getDeathInfo(source);
             if (deathInfo != null) {
-                Services.PLATFORM.sendToClient(new S2CActivateItemPacket(deathInfo.icon().getDefaultInstance()), ModPacket.activate_item,(ServerPlayer) player);
+                DeathAbilitiesCommands.enableAbility((ServerPlayer) player,deathInfo);
             }
         }
     }
