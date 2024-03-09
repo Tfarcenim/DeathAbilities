@@ -69,6 +69,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public boolean postMobGriefingEvent() {
+        return false;
+    }
+
+    @Override
     public boolean isPhysicalClient() {
         return FMLEnvironment.dist.isClient();
     }

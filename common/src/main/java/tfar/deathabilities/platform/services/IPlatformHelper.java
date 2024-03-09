@@ -49,4 +49,6 @@ public interface IPlatformHelper {
 
     EntityType<? extends DolphinWithLegsEntity> getType();
 
+    boolean postMobGriefingEvent();
+
 }
