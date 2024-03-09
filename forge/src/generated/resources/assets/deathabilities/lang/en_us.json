@@ -1,6 +1,10 @@
 {
+  "block.deathabilities.quicksand": "Quicksand",
+  "entity.deathabilities.dolphin_with_legs": "Dolphin With Legs",
+  "entity.deathabilities.quicksand_bomb": "Quicksand Bomb",
   "item.deathabilities.earth_scroll": "Earth Scroll",
   "item.deathabilities.fire_scroll": "Fire Scroll",
   "item.deathabilities.lightning_scroll": "Lightning Scroll",
+  "item.deathabilities.quicksand_bomb": "Quicksand Bomb",
   "item.deathabilities.water_scroll": "Water Scroll"
 }

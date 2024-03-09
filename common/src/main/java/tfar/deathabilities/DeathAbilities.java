@@ -8,6 +8,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.Block;
+import tfar.deathabilities.init.ModBlocks;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
 import tfar.deathabilities.network.ModPacket;
@@ -31,6 +33,7 @@ public class DeathAbilities {
     // write the majority of your code here and load it from your loader specific projects. This example has some
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
+        Services.PLATFORM.superRegister(ModBlocks.class,BuiltInRegistries.BLOCK, Block.class);
         Services.PLATFORM.superRegister(ModItems.class, BuiltInRegistries.ITEM, Item.class);
         //Services.PLATFORM.superRegister(ModCreativeTabs.class, BuiltInRegistries.CREATIVE_MODE_TAB, CreativeModeTab.class);
         //Services.PLATFORM.superRegister(ModEnchantments.class, BuiltInRegistries.ENCHANTMENT, Enchantment.class);
@@ -60,7 +63,7 @@ public class DeathAbilities {
 //
 //die by drowning/ water (call of the ocean)
 //
-//todo- can summon a laser dolphin that has legs and can walk/ run around
+//can summon a laser dolphin that has legs and can walk/ run around
 
 //todo	- i can ride them by right clicking them, and they are as fast as the fastest horses and is invincible?
 //	- it shoots its laser at things infront has a 90 degree view angle so it isnt shooting behind it or anything

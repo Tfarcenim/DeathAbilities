@@ -19,7 +19,7 @@ public class ModItemModelProvider extends ItemModelGenerators {
 
     @Override
     public void run() {
-        this.generateFlatItems(ModItems.EARTH_SCROLL,ModItems.FIRE_SCROLL,ModItems.LIGHTNING_SCROLL,ModItems.WATER_SCROLL
+        this.generateFlatItems(ModItems.EARTH_SCROLL,ModItems.FIRE_SCROLL,ModItems.LIGHTNING_SCROLL,ModItems.WATER_SCROLL,ModItems.QUICKSAND_BOMB
                 );
     }
 

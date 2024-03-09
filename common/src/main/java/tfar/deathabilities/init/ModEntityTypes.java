@@ -1,11 +1,14 @@
 package tfar.deathabilities.init;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
+import tfar.deathabilities.entity.QuickSandBombEntity;
 import tfar.deathabilities.platform.Services;
 
 public class ModEntityTypes {
 
     public static final EntityType<? extends DolphinWithLegsEntity> DOLPHIN_WITH_LEGS = Services.PLATFORM.getType();
+    public static final EntityType<QuickSandBombEntity> QUICKSAND_BOMB = EntityType.Builder.<QuickSandBombEntity>of(QuickSandBombEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("");
 
 }

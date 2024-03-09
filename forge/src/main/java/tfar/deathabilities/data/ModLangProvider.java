@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.codehaus.plexus.util.StringUtils;
 import tfar.deathabilities.DeathAbilities;
+import tfar.deathabilities.init.ModBlocks;
+import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
 
 import java.util.function.Supplier;
@@ -26,6 +28,13 @@ public class ModLangProvider extends LanguageProvider {
         addDefaultItem(() -> ModItems.FIRE_SCROLL);
         addDefaultItem(() -> ModItems.LIGHTNING_SCROLL);
         addDefaultItem(() -> ModItems.WATER_SCROLL);
+        addDefaultItem(() -> ModItems.QUICKSAND_BOMB);
+
+        addDefaultBlock(() -> ModBlocks.QUICKSAND);
+
+        addEntityType(() -> ModEntityTypes.DOLPHIN_WITH_LEGS,"Dolphin With Legs");
+        addEntityType(() -> ModEntityTypes.QUICKSAND_BOMB,"Quicksand Bomb");
+
     }
 
 
