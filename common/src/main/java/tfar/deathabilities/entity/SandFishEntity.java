@@ -28,20 +28,20 @@ import java.util.EnumSet;
 
 public class SandFishEntity extends Monster {
     @Nullable
-    private SilverfishWakeUpFriendsGoal friendsGoal;
+    private SandfishWakeUpFriendsGoal friendsGoal;
 
     public SandFishEntity(EntityType<? extends SandFishEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     protected void registerGoals() {
-        this.friendsGoal = new SilverfishWakeUpFriendsGoal(this);
+        this.friendsGoal = new SandfishWakeUpFriendsGoal(this);
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level()));
         this.goalSelector.addGoal(3, this.friendsGoal);
-        //this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(5, new SilverfishMergeWithStoneGoal(this));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.goalSelector.addGoal(4, new BreakBlockUnderTargetGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(5, new BreakStoneGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
@@ -128,12 +128,12 @@ public class SandFishEntity extends Monster {
         return MobType.ARTHROPOD;
     }
 
-    static class SilverfishMergeWithStoneGoal extends RandomStrollGoal {
+    static class BreakStoneGoal extends RandomStrollGoal {
         @Nullable
         private Direction selectedDirection;
         private boolean doMerge;
 
-        public SilverfishMergeWithStoneGoal(SandFishEntity pSilverfish) {
+        public BreakStoneGoal(SandFishEntity pSilverfish) {
             super(pSilverfish, 1.0D, 10);
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
@@ -182,7 +182,7 @@ public class SandFishEntity extends Monster {
                 BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.selectedDirection);
                 BlockState blockstate = levelaccessor.getBlockState(blockpos);
                 if (/*InfestedBlock.isCompatibleHostBlock(blockstate)*/ true) {
-                    mob.setDeltaMovement(mob.getDeltaMovement().add(0,1,0));
+                    //mob.setDeltaMovement(mob.getDeltaMovement().add(0,1,0));
                    // levelaccessor.setBlock(blockpos, InfestedBlock.infestedStateByHost(blockstate), 3);
                     this.mob.spawnAnim();
                    // this.mob.discard();
@@ -192,11 +192,11 @@ public class SandFishEntity extends Monster {
         }
     }
 
-    static class SilverfishWakeUpFriendsGoal extends Goal {
+    static class SandfishWakeUpFriendsGoal extends Goal {
         private final SandFishEntity sandFish;
         private int lookForFriends;
 
-        public SilverfishWakeUpFriendsGoal(SandFishEntity pSilverfish) {
+        public SandfishWakeUpFriendsGoal(SandFishEntity pSilverfish) {
             this.sandFish = pSilverfish;
         }
 

@@ -44,6 +44,7 @@ public class DeathAbilitiesForge {
         MinecraftForge.EVENT_BUS.addListener(this::commands);
         if (Services.PLATFORM.isPhysicalClient()) {
             bus.addListener(DeathAbilitiesClientForge::registerRenderers);
+            bus.addListener(DeathAbilitiesClientForge::keybinds);
         }
         // Use Forge to bootstrap the Common mod.
         DeathAbilities.init();
