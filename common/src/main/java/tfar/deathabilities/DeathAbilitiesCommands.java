@@ -36,7 +36,7 @@ public class DeathAbilitiesCommands {
     private static int enableAbility(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
         ServerPlayer player = EntityArgument.getPlayer(commandContext, "player");
         try {
-            DeathInfo ability = DeathInfo.valueOf(StringArgumentType.getString(commandContext, "ability"));
+            DeathAbility ability = DeathAbility.valueOf(StringArgumentType.getString(commandContext, "ability"));
             if (enableAbility(player, ability)) {
                 return 1;
             }
@@ -49,7 +49,7 @@ public class DeathAbilitiesCommands {
     private static int disableAbility(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
         ServerPlayer player = EntityArgument.getPlayer(commandContext, "player");
         try {
-            DeathInfo ability = DeathInfo.valueOf(StringArgumentType.getString(commandContext, "ability"));
+            DeathAbility ability = DeathAbility.valueOf(StringArgumentType.getString(commandContext, "ability"));
             if (disableAbility(player, ability)) {
                 return 1;
             }
@@ -59,7 +59,7 @@ public class DeathAbilitiesCommands {
         return 0;
     }
 
-    public static boolean disableAbility(ServerPlayer player, DeathInfo ability) {
+    public static boolean disableAbility(ServerPlayer player, DeathAbility ability) {
         PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
         if (playerDeathAbilities.disable(ability)) {
             //Services.PLATFORM.sendToClient(new S2CActivateItemPacket(ability.icon().getDefaultInstance()), ModPacket.activate_item, player);
@@ -68,7 +68,7 @@ public class DeathAbilitiesCommands {
         return false;
     }
 
-    public static boolean enableAbility(ServerPlayer player, DeathInfo ability) {
+    public static boolean enableAbility(ServerPlayer player, DeathAbility ability) {
         PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
         if (playerDeathAbilities.enable(ability)) {
             Services.PLATFORM.sendToClient(new S2CActivateItemPacket(ability.icon().getDefaultInstance()), ModPacket.activate_item, player);
@@ -84,14 +84,14 @@ public class DeathAbilitiesCommands {
     private static final SuggestionProvider<CommandSourceStack> DISABLED_EFFECTS = (commandContext, suggestionsBuilder) -> {
         ServerPlayer player = commandContext.getSource().getPlayer();
         PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
-        Set<DeathInfo> disabled = playerDeathAbilities.getDisabled();
+        Set<DeathAbility> disabled = playerDeathAbilities.getDisabled();
         return SharedSuggestionProvider.suggest(convertEnumsToStrings(disabled), suggestionsBuilder);
     };
 
     private static final SuggestionProvider<CommandSourceStack> ENABLED_EFFECTS = (commandContext, suggestionsBuilder) -> {
         ServerPlayer player = commandContext.getSource().getPlayer();
         PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
-        Set<DeathInfo> enabled = playerDeathAbilities.getEnabled();
+        Set<DeathAbility> enabled = playerDeathAbilities.getEnabled();
         return SharedSuggestionProvider.suggest(convertEnumsToStrings(enabled), suggestionsBuilder);
     };
 

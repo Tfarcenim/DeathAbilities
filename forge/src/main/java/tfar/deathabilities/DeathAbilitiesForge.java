@@ -14,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
+import tfar.deathabilities.client.DeathAbilitiesClient;
 import tfar.deathabilities.client.DeathAbilitiesClientForge;
 import tfar.deathabilities.data.Datagen;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
@@ -43,8 +44,7 @@ public class DeathAbilitiesForge {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::onDeath);
         MinecraftForge.EVENT_BUS.addListener(this::commands);
         if (Services.PLATFORM.isPhysicalClient()) {
-            bus.addListener(DeathAbilitiesClientForge::registerRenderers);
-            bus.addListener(DeathAbilitiesClientForge::keybinds);
+            DeathAbilitiesClientForge.events(bus);
         }
         // Use Forge to bootstrap the Common mod.
         DeathAbilities.init();

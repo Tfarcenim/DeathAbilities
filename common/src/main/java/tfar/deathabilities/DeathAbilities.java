@@ -5,15 +5,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import tfar.deathabilities.init.ModBlocks;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
-import tfar.deathabilities.network.ModPacket;
-import tfar.deathabilities.network.S2CActivateItemPacket;
 import tfar.deathabilities.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.slf4j.Logger;
@@ -42,9 +38,9 @@ public class DeathAbilities {
 
     public static void onDeath(DamageSource source, LivingEntity living) {
         if (living instanceof Player player) {
-            DeathInfo deathInfo = DeathInfo.getDeathInfo(source);
-            if (deathInfo != null) {
-                DeathAbilitiesCommands.enableAbility((ServerPlayer) player,deathInfo);
+            DeathAbility deathAbility = DeathAbility.getDeathInfo(source);
+            if (deathAbility != null) {
+                DeathAbilitiesCommands.enableAbility((ServerPlayer) player, deathAbility);
             }
         }
     }

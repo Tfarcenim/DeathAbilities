@@ -5,10 +5,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import tfar.deathabilities.init.ModItems;
 
-public enum DeathInfo {
+public enum DeathAbility {
     WATER(DamageTypeTags.IS_DROWNING, ModItems.WATER_SCROLL),
     EARTH(ModTags.IS_SUFFOCATION, ModItems.EARTH_SCROLL),
     FIRE(DamageTypeTags.IS_FIRE, ModItems.FIRE_SCROLL),
@@ -17,7 +16,7 @@ public enum DeathInfo {
     private final TagKey<DamageType> tagKey;
     private final Item icon;
 
-    DeathInfo(TagKey<DamageType> tagKey, Item icon) {
+    DeathAbility(TagKey<DamageType> tagKey, Item icon) {
         this.tagKey = tagKey;
         this.icon = icon;
     }
@@ -28,10 +27,10 @@ public enum DeathInfo {
 
 
 
-    public static DeathInfo getDeathInfo(DamageSource source) {
-        for (DeathInfo deathInfo : DeathInfo.values()) {
-            if (source.is(deathInfo.tagKey)) {
-                return deathInfo;
+    public static DeathAbility getDeathInfo(DamageSource source) {
+        for (DeathAbility deathAbility : DeathAbility.values()) {
+            if (source.is(deathAbility.tagKey)) {
+                return deathAbility;
             }
         }
         return null;

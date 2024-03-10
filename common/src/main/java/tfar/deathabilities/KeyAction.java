@@ -5,12 +5,12 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.function.Consumer;
 
 public enum KeyAction {
-    SPAWN_SANDFISH(DeathInfo.EARTH,player -> {});
+    SPAWN_SANDFISH(DeathAbility.EARTH, player -> {});
 
-    private final DeathInfo ability;
-    private final Consumer<ServerPlayer> activate;
+    public final DeathAbility ability;
+    public final Consumer<ServerPlayer> activate;
 
-    KeyAction(DeathInfo ability, Consumer<ServerPlayer> activate) {
+    KeyAction(DeathAbility ability, Consumer<ServerPlayer> activate) {
 
         this.ability = ability;
         this.activate = activate;

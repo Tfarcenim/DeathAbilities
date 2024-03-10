@@ -13,6 +13,7 @@ import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.DeathAbilitiesForge;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.entity.DolphinWithLegsEntityGeo;
+import tfar.deathabilities.network.C2SModPacket;
 import tfar.deathabilities.network.PacketHandlerForge;
 import tfar.deathabilities.network.S2CModPacket;
 import tfar.deathabilities.platform.services.IPlatformHelper;
@@ -81,5 +82,10 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public void sendToClient(S2CModPacket msg, ResourceLocation channel, ServerPlayer player) {
         PacketHandlerForge.sendToClient(msg,player);
+    }
+
+    @Override
+    public void sendToServer(C2SModPacket msg, ResourceLocation channel) {
+        PacketHandlerForge.sendToServer(msg);
     }
 }

@@ -27,6 +27,12 @@ public class PacketHandlerForge {
                 S2CActivateItemPacket::write,
                 S2CActivateItemPacket::new,
                 wrapS2C());
+
+        INSTANCE.registerMessage(i++,
+                C2SKeyActionPacket.class,
+                C2SKeyActionPacket::write,
+                C2SKeyActionPacket::new,
+                wrapC2S());
     }
 
     private static <MSG extends S2CModPacket> BiConsumer<MSG, Supplier<NetworkEvent.Context>> wrapS2C() {

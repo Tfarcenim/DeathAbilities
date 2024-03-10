@@ -9,23 +9,26 @@ import java.util.stream.Collectors;
 
 public class PlayerDeathAbilities {
 
-    private final Set<DeathInfo> enabled = new HashSet<>();
+    private final Set<DeathAbility> enabled = new HashSet<>();
 
 
-    public Set<DeathInfo> getEnabled() {
+    public Set<DeathAbility> getEnabled() {
         return enabled;
     }
 
-    public boolean enable(DeathInfo ability) {
+    public boolean enable(DeathAbility ability) {
         return enabled.add(ability);
     }
+    public boolean isEnabled(DeathAbility ability) {
+        return enabled.contains(ability);
+    }
 
-    public boolean disable(DeathInfo ability) {
+    public boolean disable(DeathAbility ability) {
         return enabled.remove(ability);
     }
 
-    public Set<DeathInfo> getDisabled() {
-        Set<DeathInfo> disabled = Arrays.stream(DeathInfo.values()).collect(Collectors.toSet());
+    public Set<DeathAbility> getDisabled() {
+        Set<DeathAbility> disabled = Arrays.stream(DeathAbility.values()).collect(Collectors.toSet());
         disabled.removeAll(enabled);
         return disabled;
     }
@@ -40,7 +43,7 @@ public class PlayerDeathAbilities {
         int[] arr = tag;
         PlayerDeathAbilities playerDeathAbilities = new PlayerDeathAbilities();
         for (int i : arr) {
-            playerDeathAbilities.enabled.add(DeathInfo.values()[i]);
+            playerDeathAbilities.enabled.add(DeathAbility.values()[i]);
         }
         return playerDeathAbilities;
     }
