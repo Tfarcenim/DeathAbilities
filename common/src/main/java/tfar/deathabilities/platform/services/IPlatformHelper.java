@@ -1,7 +1,6 @@
 package tfar.deathabilities.platform.services;
 
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
@@ -44,8 +43,8 @@ public interface IPlatformHelper {
 
     boolean isPhysicalClient();
 
-    void sendToClient(S2CModPacket msg, ResourceLocation channel, ServerPlayer player);
-    void sendToServer(C2SModPacket msg, ResourceLocation channel);
+    void sendToClient(S2CModPacket msg, ServerPlayer player);
+    void sendToServer(C2SModPacket msg);
 
 
     <T extends Registry<? extends F>,F> void superRegister(Class<?> clazz, T registry, Class<F> filter);

@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.network.NetworkDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.DeathAbilitiesForge;
@@ -80,12 +79,12 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public void sendToClient(S2CModPacket msg, ResourceLocation channel, ServerPlayer player) {
+    public void sendToClient(S2CModPacket msg, ServerPlayer player) {
         PacketHandlerForge.sendToClient(msg,player);
     }
 
     @Override
-    public void sendToServer(C2SModPacket msg, ResourceLocation channel) {
+    public void sendToServer(C2SModPacket msg) {
         PacketHandlerForge.sendToServer(msg);
     }
 }

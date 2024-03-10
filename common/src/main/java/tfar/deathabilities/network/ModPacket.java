@@ -6,7 +6,7 @@ import tfar.deathabilities.DeathAbilities;
 
 public interface ModPacket {
 
-    ResourceLocation activate_item = new ResourceLocation(DeathAbilities.MOD_ID,"activate_item");
+    ResourceLocation id();
     void write(FriendlyByteBuf to);
 
 }

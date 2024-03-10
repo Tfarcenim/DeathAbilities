@@ -71,7 +71,7 @@ public class DeathAbilitiesCommands {
     public static boolean enableAbility(ServerPlayer player, DeathAbility ability) {
         PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
         if (playerDeathAbilities.enable(ability)) {
-            Services.PLATFORM.sendToClient(new S2CActivateItemPacket(ability.icon().getDefaultInstance()), ModPacket.activate_item, player);
+            Services.PLATFORM.sendToClient(new S2CActivateItemPacket(ability.icon().getDefaultInstance()),player);
             return true;
         }
         return false;
