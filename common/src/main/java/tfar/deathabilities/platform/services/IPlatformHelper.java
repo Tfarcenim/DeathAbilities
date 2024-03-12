@@ -1,8 +1,12 @@
 package tfar.deathabilities.platform.services;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.network.C2SModPacket;
 import tfar.deathabilities.network.S2CModPacket;
@@ -52,5 +56,10 @@ public interface IPlatformHelper {
     EntityType<? extends DolphinWithLegsEntity> getType();
 
     boolean postMobGriefingEvent();
+
+
+    boolean canEntityDestroyHook(Level level, BlockPos pos, LivingEntity entity);
+
+    int getExperienceDropHook(LivingEntity entity, Player attackingPlayer, int originalExperience);
 
 }

@@ -1,18 +1,25 @@
 package tfar.deathabilities;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.phys.BlockHitResult;
+import tfar.deathabilities.entity.SandFishEntity;
+import tfar.deathabilities.init.ModEntityTypes;
 
 import java.util.function.Consumer;
 
 public enum KeyAction {
-    SPAWN_SANDFISH(DeathAbility.EARTH, player -> {});
+    SPAWN_SANDFISH(DeathAbility.EARTH, player -> {
+        BlockHitResult hitResult = (BlockHitResult) player.pick(24,0,false);
+        SandFishEntity sandFishEntity = ModEntityTypes.SANDFISH.spawn(player.serverLevel(),hitResult.getBlockPos().relative(hitResult.getDirection()), MobSpawnType.COMMAND);
+    });
 
     public final DeathAbility ability;
-    public final Consumer<ServerPlayer> activate;
+    public final Consumer<ServerPlayer> runner_activate;
 
-    KeyAction(DeathAbility ability, Consumer<ServerPlayer> activate) {
+    KeyAction(DeathAbility ability, Consumer<ServerPlayer> runner_activate) {
 
         this.ability = ability;
-        this.activate = activate;
+        this.runner_activate = runner_activate;
     }
 }

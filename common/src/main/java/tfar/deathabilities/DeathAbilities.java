@@ -101,7 +101,7 @@ public class DeathAbilities {
 //	- fire heals me now/ magma blocks/ lava
 //	- my fire effects are permenant fire effects aka you can't put them out even with water
 //
-//- I can pick mobs ups and throw them and they explode in a giant firey explosion
+// todo - I can pick mobs ups and throw them and they explode in a giant firey explosion
 //
 //===================================================================================================================
 //
