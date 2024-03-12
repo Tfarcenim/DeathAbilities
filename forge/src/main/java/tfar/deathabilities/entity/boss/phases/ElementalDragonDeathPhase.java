@@ -5,7 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +14,7 @@ public class ElementalDragonDeathPhase extends AbstractElementalDragonPhaseInsta
    private Vec3 targetLocation;
    private int time;
 
-   public ElementalDragonDeathPhase(ElementalDragon pDragon) {
+   public ElementalDragonDeathPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

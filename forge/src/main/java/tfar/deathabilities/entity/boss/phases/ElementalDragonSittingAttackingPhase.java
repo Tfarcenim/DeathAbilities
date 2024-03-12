@@ -1,13 +1,13 @@
 package tfar.deathabilities.entity.boss.phases;
 
 import net.minecraft.sounds.SoundEvents;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 public class ElementalDragonSittingAttackingPhase extends AbstractElementalDragonSittingPhase {
    private static final int ROAR_DURATION = 40;
    private int attackingTicks;
 
-   public ElementalDragonSittingAttackingPhase(ElementalDragon pDragon) {
+   public ElementalDragonSittingAttackingPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

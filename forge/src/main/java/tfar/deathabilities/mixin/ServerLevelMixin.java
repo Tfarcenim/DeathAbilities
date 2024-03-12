@@ -11,6 +11,6 @@ public class ServerLevelMixin implements ServerLevelDuck {
     private EndElementalDragonFight elementalDragonFight;
     @Override
     public EndElementalDragonFight getFight() {
-        return null;
+        return elementalDragonFight;
     }
 }

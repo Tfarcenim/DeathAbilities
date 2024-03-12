@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -20,7 +20,7 @@ public class ElementalDragonLandingApproachPhase extends AbstractElementalDragon
    @Nullable
    private Vec3 targetLocation;
 
-   public ElementalDragonLandingApproachPhase(ElementalDragon pDragon) {
+   public ElementalDragonLandingApproachPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

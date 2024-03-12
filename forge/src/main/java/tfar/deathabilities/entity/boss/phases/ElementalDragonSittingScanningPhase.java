@@ -4,7 +4,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 public class ElementalDragonSittingScanningPhase extends AbstractElementalDragonSittingPhase {
    private static final int SITTING_SCANNING_IDLE_TICKS = 100;
@@ -15,7 +15,7 @@ public class ElementalDragonSittingScanningPhase extends AbstractElementalDragon
    private final TargetingConditions scanTargeting;
    private int scanningTime;
 
-   public ElementalDragonSittingScanningPhase(ElementalDragon pDragon) {
+   public ElementalDragonSittingScanningPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
       this.scanTargeting = TargetingConditions.forCombat().range(20.0D).selector((p_289455_) -> {
          return Math.abs(p_289455_.getY() - pDragon.getY()) <= 10.0D;

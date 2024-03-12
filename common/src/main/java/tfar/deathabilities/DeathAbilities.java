@@ -24,6 +24,7 @@ public class DeathAbilities {
     public static final String MOD_ID = "deathabilities";
     public static final String MOD_NAME = "DeathAbilities";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
+    public static boolean enable_dragon = true;
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
     // write the majority of your code here and load it from your loader specific projects. This example has some

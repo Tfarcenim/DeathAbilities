@@ -1,7 +1,7 @@
 package tfar.deathabilities.entity.boss.phases;
 
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -9,7 +9,7 @@ public class ElementalDragonHoverPhase extends AbstractElementalDragonPhaseInsta
    @Nullable
    private Vec3 targetLocation;
 
-   public ElementalDragonHoverPhase(ElementalDragon pDragon) {
+   public ElementalDragonHoverPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

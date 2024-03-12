@@ -1,21 +1,11 @@
 package tfar.deathabilities.entity.boss;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ContiguousSet;
-import com.google.common.collect.DiscreteDomain;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Predicate;
-import javax.annotation.Nullable;
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -24,11 +14,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.EndFeatures;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.FullChunkStatus;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.TicketType;
+import net.minecraft.server.level.*;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
@@ -58,6 +44,13 @@ import net.minecraft.world.phys.AABB;
 import org.slf4j.Logger;
 import tfar.deathabilities.entity.boss.phases.ElementalDragonPhase;
 import tfar.deathabilities.init.ModEntityTypes;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 public class EndElementalDragonFight {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -225,7 +218,7 @@ public class EndElementalDragonFight {
             if (pState == ElementalDragonRespawnAnimation.END) {
                 this.respawnStage = null;
                 this.dragonKilled = false;
-                ElementalDragon enderdragon = this.createNewDragon();
+                ElementalDragonEntity enderdragon = this.createNewDragon();
                 if (enderdragon != null) {
                     for(ServerPlayer serverplayer : this.dragonEvent.getPlayers()) {
                         CriteriaTriggers.SUMMONED_ENTITY.trigger(serverplayer, enderdragon);
@@ -347,7 +340,7 @@ public class EndElementalDragonFight {
         LOGGER.debug("Found {} end crystals still alive", this.crystalsAlive);
     }
 
-    public void setDragonKilled(ElementalDragon pDragon) {
+    public void setDragonKilled(ElementalDragonEntity pDragon) {
         if (pDragon.getUUID().equals(this.dragonUUID)) {
             this.dragonEvent.setProgress(0.0F);
             this.dragonEvent.setVisible(false);
@@ -399,9 +392,9 @@ public class EndElementalDragonFight {
     }
 
     @Nullable
-    private ElementalDragon createNewDragon() {
+    private ElementalDragonEntity createNewDragon() {
         this.level.getChunkAt(new BlockPos(this.origin.getX(), 128 + this.origin.getY(), this.origin.getZ()));
-        ElementalDragon enderdragon = ModEntityTypes.ELEMENTAL_DRAGON.create(this.level);
+        ElementalDragonEntity enderdragon = (ElementalDragonEntity) ModEntityTypes.ELEMENTAL_DRAGON.create(this.level);
         if (enderdragon != null) {
             enderdragon.setDragonFight(this);
             enderdragon.setFightOrigin(this.origin);
@@ -414,7 +407,7 @@ public class EndElementalDragonFight {
         return enderdragon;
     }
 
-    public void updateDragon(ElementalDragon pDragon) {
+    public void updateDragon(ElementalDragonEntity pDragon) {
         if (pDragon.getUUID().equals(this.dragonUUID)) {
             this.dragonEvent.setProgress(pDragon.getHealth() / pDragon.getMaxHealth());
             this.ticksSinceDragonSeen = 0;
@@ -516,6 +509,7 @@ public class EndElementalDragonFight {
         }
     }
 
+    //unused in vanilla
     public void addPlayer(ServerPlayer player) {
         this.dragonEvent.addPlayer(player);
     }

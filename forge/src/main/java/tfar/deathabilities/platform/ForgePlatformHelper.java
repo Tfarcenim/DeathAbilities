@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -18,6 +19,7 @@ import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.DeathAbilitiesForge;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.entity.DolphinWithLegsEntityGeo;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 import tfar.deathabilities.network.C2SModPacket;
 import tfar.deathabilities.network.PacketHandlerForge;
 import tfar.deathabilities.network.S2CModPacket;
@@ -72,6 +74,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public EntityType<? extends DolphinWithLegsEntity> getType() {
         return EntityType.Builder.of(DolphinWithLegsEntityGeo::new, MobCategory.MISC)
                 .sized(1,1.75f).build("");
+    }
+
+    @Override
+    public EntityType<? extends Mob> getDragonType() {
+        return EntityType.Builder.of(ElementalDragonEntity::new, MobCategory.MONSTER).fireImmune().sized(16.0F, 8.0F).clientTrackingRange(10).build("");
     }
 
     @Override

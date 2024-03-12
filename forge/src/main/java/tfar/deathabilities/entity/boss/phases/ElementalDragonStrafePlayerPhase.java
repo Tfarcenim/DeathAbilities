@@ -9,7 +9,7 @@ import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +25,7 @@ public class ElementalDragonStrafePlayerPhase extends AbstractElementalDragonPha
    private LivingEntity attackTarget;
    private boolean holdingPatternClockwise;
 
-   public ElementalDragonStrafePlayerPhase(ElementalDragon pDragon) {
+   public ElementalDragonStrafePlayerPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

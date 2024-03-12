@@ -1,21 +1,20 @@
 package tfar.deathabilities.entity.boss.phases;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import org.slf4j.Logger;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
 public class ElementalDragonPhaseManager {
 
     private static final Logger LOGGER = LogUtils.getLogger();
-    private final ElementalDragon dragon;
+    private final ElementalDragonEntity dragon;
     private final ElementalDragonPhaseInstance[] phases = new ElementalDragonPhaseInstance[ElementalDragonPhase.getCount()];
     @Nullable
     private ElementalDragonPhaseInstance currentPhase;
 
-    public ElementalDragonPhaseManager(ElementalDragon $$0) {
+    public ElementalDragonPhaseManager(ElementalDragonEntity $$0) {
         this.dragon = $$0;
         this.setPhase(ElementalDragonPhase.HOVERING);
     }
@@ -28,7 +27,7 @@ public class ElementalDragonPhaseManager {
 
             this.currentPhase = this.getPhase($$0);
             if (!this.dragon.level().isClientSide) {
-                this.dragon.getEntityData().set(EnderDragon.DATA_PHASE, $$0.getId());
+                this.dragon.getEntityData().set(ElementalDragonEntity.DATA_PHASE, $$0.getId());
             }
 
             LOGGER.debug("Dragon is now in phase {} on the {}", $$0, this.dragon.level().isClientSide ? "client" : "server");

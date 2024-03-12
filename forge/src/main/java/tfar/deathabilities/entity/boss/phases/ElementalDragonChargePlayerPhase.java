@@ -3,7 +3,7 @@ package tfar.deathabilities.entity.boss.phases;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +14,7 @@ public class ElementalDragonChargePlayerPhase extends AbstractElementalDragonPha
    private Vec3 targetLocation;
    private int timeSinceCharge;
 
-   public ElementalDragonChargePlayerPhase(ElementalDragon pDragon) {
+   public ElementalDragonChargePlayerPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

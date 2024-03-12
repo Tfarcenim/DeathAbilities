@@ -37,17 +37,19 @@ import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
 import org.slf4j.Logger;
 import tfar.deathabilities.ducks.ServerLevelDuck;
 import tfar.deathabilities.entity.boss.phases.ElementalDragonPhase;
 import tfar.deathabilities.entity.boss.phases.ElementalDragonPhaseInstance;
 import tfar.deathabilities.entity.boss.phases.ElementalDragonPhaseManager;
+import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.platform.Services;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ElementalDragon extends Mob implements Enemy {
+public class ElementalDragonEntity extends Mob implements Enemy {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final EntityDataAccessor<Integer> DATA_PHASE = SynchedEntityData.defineId(net.minecraft.world.entity.boss.enderdragon.EnderDragon.class, EntityDataSerializers.INT);
     private static final TargetingConditions CRYSTAL_DESTROY_TARGETING = TargetingConditions.forCombat().range(64.0D);
@@ -84,8 +86,8 @@ public class ElementalDragon extends Mob implements Enemy {
     private final int[] nodeAdjacency = new int[24];
     private final BinaryHeap openSet = new BinaryHeap();
 
-    public ElementalDragon(EntityType<? extends ElementalDragon> pEntityType, Level pLevel) {
-        super(EntityType.ENDER_DRAGON, pLevel);
+    public ElementalDragonEntity(EntityType<? extends ElementalDragonEntity> pEntityType, Level pLevel) {
+        super(ModEntityTypes.ELEMENTAL_DRAGON, pLevel);
         this.head = new ElementalDragonPart(this, "head", 1.0F, 1.0F);
         this.neck = new ElementalDragonPart(this, "neck", 3.0F, 3.0F);
         this.body = new ElementalDragonPart(this, "body", 5.0F, 3.0F);
@@ -811,12 +813,12 @@ public class ElementalDragon extends Mob implements Enemy {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("DragonPhase")) {
-            this.phaseManager.setPhase(ElementalDragonPhase.getById(pCompound.getInt("DragonPhase")));
+        if (pCompound.contains(DRAGON_PHASE_KEY)) {
+            this.phaseManager.setPhase(ElementalDragonPhase.getById(pCompound.getInt(DRAGON_PHASE_KEY)));
         }
 
-        if (pCompound.contains("DragonDeathTime")) {
-            this.dragonDeathTime = pCompound.getInt("DragonDeathTime");
+        if (pCompound.contains(DRAGON_DEATH_TIME_KEY)) {
+            this.dragonDeathTime = pCompound.getInt(DRAGON_DEATH_TIME_KEY);
         }
 
     }
@@ -963,27 +965,23 @@ public class ElementalDragon extends Mob implements Enemy {
         return false;
     }
 
-       /* @Override
-        public boolean isMultipartEntity() {
-            return true;
-        }
-
-        @Override
-        public net.minecraftforge.entity.PartEntity<?>[] getParts() {
-            return this.subEntities;
-        }*/
-
     @Override
     public void recreateFromPacket(ClientboundAddEntityPacket pPacket) {
         super.recreateFromPacket(pPacket);
-        if (true) return; // Forge: Fix MC-158205: Moved into setId()
-        ElementalDragonPart[] aenderdragonpart = this.getSubEntities();
-
-        for (int i = 0; i < aenderdragonpart.length; ++i) {
-            aenderdragonpart[i].setId(i + pPacket.getId());
-        }
+        return; // Forge: Fix MC-158205: Moved into setId()
 
     }
+
+    @Override
+    public boolean isMultipartEntity() {
+        return true;
+    }
+
+    @Override
+    public PartEntity<?>[] getParts() {
+        return this.subEntities;
+    }
+
 
     @Override
     public boolean canAttack(LivingEntity pTarget) {

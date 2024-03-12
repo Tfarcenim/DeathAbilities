@@ -2,10 +2,10 @@ package tfar.deathabilities.entity.boss.phases;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 public abstract class AbstractElementalDragonSittingPhase extends AbstractElementalDragonPhaseInstance {
-   public AbstractElementalDragonSittingPhase(ElementalDragon p_31196_) {
+   public AbstractElementalDragonSittingPhase(ElementalDragonEntity p_31196_) {
       super(p_31196_);
    }
 

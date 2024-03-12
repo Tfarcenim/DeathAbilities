@@ -2,15 +2,12 @@ package tfar.deathabilities.entity.boss.phases;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.boss.enderdragon.phases.AbstractDragonPhaseInstance;
-import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -21,7 +18,7 @@ public class ElementalDragonTakeoffPhase extends AbstractElementalDragonPhaseIns
    @Nullable
    private Vec3 targetLocation;
 
-   public ElementalDragonTakeoffPhase(ElementalDragon pDragon) {
+   public ElementalDragonTakeoffPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

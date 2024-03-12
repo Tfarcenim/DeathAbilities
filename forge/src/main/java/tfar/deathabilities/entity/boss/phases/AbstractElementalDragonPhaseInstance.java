@@ -5,14 +5,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
 public abstract class AbstractElementalDragonPhaseInstance implements ElementalDragonPhaseInstance {
-    protected final ElementalDragon dragon;
+    protected final ElementalDragonEntity dragon;
 
-    public AbstractElementalDragonPhaseInstance(ElementalDragon pDragon) {
+    public AbstractElementalDragonPhaseInstance(ElementalDragonEntity pDragon) {
         this.dragon = pDragon;
     }
 

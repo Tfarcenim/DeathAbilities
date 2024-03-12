@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -22,7 +22,7 @@ public class ElementalDragonHoldingPatternPhase extends AbstractElementalDragonP
    private Vec3 targetLocation;
    private boolean clockwise;
 
-   public ElementalDragonHoldingPatternPhase(ElementalDragon pDragon) {
+   public ElementalDragonHoldingPatternPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

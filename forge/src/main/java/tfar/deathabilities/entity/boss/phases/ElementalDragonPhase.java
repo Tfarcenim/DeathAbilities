@@ -1,7 +1,6 @@
 package tfar.deathabilities.entity.boss.phases;
 
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -29,7 +28,7 @@ public class ElementalDragonPhase<T extends ElementalDragonPhaseInstance> {
         this.name = pName;
     }
 
-    public ElementalDragonPhaseInstance createInstance(ElementalDragon pDragon) {
+    public ElementalDragonPhaseInstance createInstance(ElementalDragonEntity pDragon) {
         try {
             Constructor<? extends ElementalDragonPhaseInstance> constructor = this.getConstructor();
             return constructor.newInstance(pDragon);
@@ -39,7 +38,7 @@ public class ElementalDragonPhase<T extends ElementalDragonPhaseInstance> {
     }
 
     protected Constructor<? extends ElementalDragonPhaseInstance> getConstructor() throws NoSuchMethodException {
-        return this.instanceClass.getConstructor(EnderDragon.class);
+        return this.instanceClass.getConstructor(ElementalDragonEntity.class);
     }
 
     public int getId() {

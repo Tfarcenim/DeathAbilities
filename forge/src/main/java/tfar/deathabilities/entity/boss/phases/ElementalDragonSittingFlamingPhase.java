@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.phys.Vec3;
-import tfar.deathabilities.entity.boss.ElementalDragon;
+import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 
 import javax.annotation.Nullable;
 
@@ -20,7 +20,7 @@ public class ElementalDragonSittingFlamingPhase extends AbstractElementalDragonS
    @Nullable
    private AreaEffectCloud flame;
 
-   public ElementalDragonSittingFlamingPhase(ElementalDragon pDragon) {
+   public ElementalDragonSittingFlamingPhase(ElementalDragonEntity pDragon) {
       super(pDragon);
    }
 

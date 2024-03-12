@@ -1,6 +1,5 @@
 package tfar.deathabilities.entity.boss;
 
-import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -8,16 +7,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.entity.PartEntity;
 
-public class ElementalDragonPart extends Entity {
-    public final ElementalDragon parentMob;
+import javax.annotation.Nullable;
+
+public class ElementalDragonPart extends PartEntity<ElementalDragonEntity> {
+    public final ElementalDragonEntity parentMob;
     public final String name;
     private final EntityDimensions size;
 
-    public ElementalDragonPart(ElementalDragon pParentMob, String pName, float pWidth, float pHeight) {
-        super(pParentMob.getType(),pParentMob.level());
+    public ElementalDragonPart(ElementalDragonEntity pParentMob, String pName, float pWidth, float pHeight) {
+        super(pParentMob);
         this.size = EntityDimensions.scalable(pWidth, pHeight);
         this.refreshDimensions();
         this.parentMob = pParentMob;
