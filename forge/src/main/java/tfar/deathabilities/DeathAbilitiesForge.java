@@ -18,7 +18,6 @@ import tfar.deathabilities.client.DeathAbilitiesClientForge;
 import tfar.deathabilities.data.Datagen;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.entity.SandFishEntity;
-import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.network.PacketHandlerForge;
 import tfar.deathabilities.platform.Services;
@@ -75,7 +74,6 @@ public class DeathAbilitiesForge {
     private void attributes(EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.DOLPHIN_WITH_LEGS, DolphinWithLegsEntity.createAttributes().build());
         event.put(ModEntityTypes.SANDFISH, SandFishEntity.createAttributes().build());
-        event.put(ModEntityTypes.ELEMENTAL_DRAGON, ElementalDragonEntity.createAttributes().build());
     }
 
 }

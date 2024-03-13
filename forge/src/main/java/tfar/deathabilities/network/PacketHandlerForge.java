@@ -29,6 +29,14 @@ public class PacketHandlerForge {
                 wrapS2C());
 
         INSTANCE.registerMessage(i++,
+                S2CSyncDragonAbilityPacket.class,
+                S2CSyncDragonAbilityPacket::write,
+                S2CSyncDragonAbilityPacket::new,
+                wrapS2C());
+
+        //client to server
+
+        INSTANCE.registerMessage(i++,
                 C2SKeyActionPacket.class,
                 C2SKeyActionPacket::write,
                 C2SKeyActionPacket::new,

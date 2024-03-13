@@ -9,7 +9,7 @@ import tfar.deathabilities.init.ModEntityTypes;
 import java.util.function.Consumer;
 
 public enum KeyAction {
-    SPAWN_SANDFISH(DeathAbility.EARTH, player -> {
+    SPAWN_SANDFISH(DeathAbility.earth, player -> {
         BlockHitResult hitResult = (BlockHitResult) player.pick(24,0,false);
         SandFishEntity sandFishEntity = ModEntityTypes.SANDFISH.spawn(player.serverLevel(),hitResult.getBlockPos().relative(hitResult.getDirection()), MobSpawnType.COMMAND);
     });

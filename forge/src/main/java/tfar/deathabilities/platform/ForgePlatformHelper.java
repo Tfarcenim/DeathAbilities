@@ -1,25 +1,19 @@
 package tfar.deathabilities.platform;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.DeathAbilitiesForge;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.entity.DolphinWithLegsEntityGeo;
-import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 import tfar.deathabilities.network.C2SModPacket;
 import tfar.deathabilities.network.PacketHandlerForge;
 import tfar.deathabilities.network.S2CModPacket;
@@ -77,11 +71,6 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public EntityType<? extends Mob> getDragonType() {
-        return EntityType.Builder.of(ElementalDragonEntity::new, MobCategory.MONSTER).fireImmune().sized(16.0F, 8.0F).clientTrackingRange(10).build("");
-    }
-
-    @Override
     public boolean postMobGriefingEvent() {
         return false;
     }
@@ -97,17 +86,13 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public void sendToTrackingClients(S2CModPacket msg, Entity entity) {
+        PacketHandlerForge.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity),msg);
+    }
+
+    @Override
     public void sendToServer(C2SModPacket msg) {
         PacketHandlerForge.sendToServer(msg);
     }
 
-    @Override
-    public boolean canEntityDestroyHook(Level level, BlockPos pos, LivingEntity entity) {
-        return ForgeHooks.canEntityDestroy(level, pos, entity);
-    }
-
-    @Override
-    public int getExperienceDropHook(LivingEntity entity, Player attackingPlayer, int originalExperience) {
-        return ForgeEventFactory.getExperienceDrop(entity, attackingPlayer, originalExperience);
-    }
 }

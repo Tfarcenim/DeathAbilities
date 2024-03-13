@@ -9,7 +9,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import tfar.deathabilities.entity.DolphinWithLegsEntityGeo;
-import tfar.deathabilities.entity.boss.ElementalDragonEntity;
 import tfar.deathabilities.init.ModEntityTypes;
 
 public class DeathAbilitiesClientForge {
@@ -31,7 +30,6 @@ public class DeathAbilitiesClientForge {
         EntityRenderers.register((EntityType<DolphinWithLegsEntityGeo>) ModEntityTypes.DOLPHIN_WITH_LEGS, DolphinWithLegsRenderer::new);
         EntityRenderers.register(ModEntityTypes.QUICKSAND_BOMB, ThrownItemRenderer::new);
         EntityRenderers.register(ModEntityTypes.SANDFISH, SandfishRenderer::new);
-        EntityRenderers.register((EntityType<? extends ElementalDragonEntity>) ModEntityTypes.ELEMENTAL_DRAGON, ElementalDragonRenderer::new);
     }
 
     private static void keybinds(RegisterKeyMappingsEvent event) {
