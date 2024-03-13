@@ -30,6 +30,7 @@ public class DeathAbilitiesClientForge {
         EntityRenderers.register((EntityType<DolphinWithLegsEntityGeo>) ModEntityTypes.DOLPHIN_WITH_LEGS, DolphinWithLegsRenderer::new);
         EntityRenderers.register(ModEntityTypes.QUICKSAND_BOMB, ThrownItemRenderer::new);
         EntityRenderers.register(ModEntityTypes.SANDFISH, SandfishRenderer::new);
+        EntityRenderers.register(ModEntityTypes.FIRE_DRAGON_FIREBALL, (ctx) -> new ThrownItemRenderer<>(ctx, 3.0F, true));
     }
 
     private static void keybinds(RegisterKeyMappingsEvent event) {

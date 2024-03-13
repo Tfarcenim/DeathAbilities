@@ -3,9 +3,14 @@ package tfar.deathabilities;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.projectile.DragonFireball;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,7 +21,9 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import tfar.deathabilities.client.DeathAbilitiesClientForge;
 import tfar.deathabilities.data.Datagen;
+import tfar.deathabilities.ducks.EnderDragonDuck;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
+import tfar.deathabilities.entity.FireDragonFireball;
 import tfar.deathabilities.entity.SandFishEntity;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.network.PacketHandlerForge;
@@ -42,11 +49,34 @@ public class DeathAbilitiesForge {
         bus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::onDeath);
         MinecraftForge.EVENT_BUS.addListener(this::commands);
+        MinecraftForge.EVENT_BUS.addListener(this::entityJoinWorld);
         if (Services.PLATFORM.isPhysicalClient()) {
             DeathAbilitiesClientForge.events(bus);
         }
         // Use Forge to bootstrap the Common mod.
         DeathAbilities.init();
+    }
+
+    private void entityJoinWorld(EntityJoinLevelEvent event) {
+        if (DeathAbilities.enable_dragon) {
+            Entity entity = event.getEntity();
+            Level level = event.getLevel();
+            if (entity instanceof DragonFireball dragonFireball) {
+                Entity owner = dragonFireball.getOwner();
+                if (owner instanceof EnderDragon enderDragon) {
+                    if (!level.isClientSide) {
+                        DeathAbility deathAbility = EnderDragonDuck.of(enderDragon).getPhase();
+                        switch (deathAbility) {
+                            case fire -> {
+                                entity.level().addFreshEntity(new FireDragonFireball(entity.level(),enderDragon,
+                                        dragonFireball.xPower,dragonFireball.yPower,dragonFireball.zPower,2));
+                            }
+                        }
+                    }
+                    event.setCanceled(true);
+                }
+            }
+        }
     }
 
     private void commands(RegisterCommandsEvent event) {
