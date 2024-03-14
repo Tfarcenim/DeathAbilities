@@ -8,6 +8,8 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import tfar.deathabilities.client.renderer.LightningVexRenderer;
+import tfar.deathabilities.client.renderer.SandfishRenderer;
 import tfar.deathabilities.entity.DolphinWithLegsEntityGeo;
 import tfar.deathabilities.init.ModEntityTypes;
 
@@ -31,6 +33,7 @@ public class DeathAbilitiesClientForge {
         EntityRenderers.register(ModEntityTypes.QUICKSAND_BOMB, ThrownItemRenderer::new);
         EntityRenderers.register(ModEntityTypes.SANDFISH, SandfishRenderer::new);
         EntityRenderers.register(ModEntityTypes.FIRE_DRAGON_FIREBALL, (ctx) -> new ThrownItemRenderer<>(ctx, 3.0F, true));
+        EntityRenderers.register(ModEntityTypes.LIGHTNING_VEX, LightningVexRenderer::new);
     }
 
     private static void keybinds(RegisterKeyMappingsEvent event) {

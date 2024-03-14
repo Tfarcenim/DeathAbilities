@@ -10,14 +10,14 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import tfar.deathabilities.init.ModEntityTypes;
 
-public class FireDragonFireball extends Fireball {
+public class FireDragonFireballEntity extends Fireball {
     private int explosionPower = 1;
 
-    public FireDragonFireball(EntityType<? extends FireDragonFireball> pEntityType, Level pLevel) {
+    public FireDragonFireballEntity(EntityType<? extends FireDragonFireballEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public FireDragonFireball(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ, int pExplosionPower) {
+    public FireDragonFireballEntity(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ, int pExplosionPower) {
         super(ModEntityTypes.FIRE_DRAGON_FIREBALL, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);
         this.explosionPower = pExplosionPower;
     }

@@ -23,7 +23,8 @@ import tfar.deathabilities.client.DeathAbilitiesClientForge;
 import tfar.deathabilities.data.Datagen;
 import tfar.deathabilities.ducks.EnderDragonDuck;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
-import tfar.deathabilities.entity.FireDragonFireball;
+import tfar.deathabilities.entity.FireDragonFireballEntity;
+import tfar.deathabilities.entity.LightningVexEntity;
 import tfar.deathabilities.entity.SandFishEntity;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.network.PacketHandlerForge;
@@ -68,7 +69,7 @@ public class DeathAbilitiesForge {
                         DeathAbility deathAbility = EnderDragonDuck.of(enderDragon).getPhase();
                         switch (deathAbility) {
                             case fire -> {
-                                entity.level().addFreshEntity(new FireDragonFireball(entity.level(),enderDragon,
+                                entity.level().addFreshEntity(new FireDragonFireballEntity(entity.level(),enderDragon,
                                         dragonFireball.xPower,dragonFireball.yPower,dragonFireball.zPower,2));
                             }
                         }
@@ -104,6 +105,7 @@ public class DeathAbilitiesForge {
     private void attributes(EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.DOLPHIN_WITH_LEGS, DolphinWithLegsEntity.createAttributes().build());
         event.put(ModEntityTypes.SANDFISH, SandFishEntity.createAttributes().build());
+        event.put(ModEntityTypes.LIGHTNING_VEX, LightningVexEntity.createAttributes().build());
     }
 
 }

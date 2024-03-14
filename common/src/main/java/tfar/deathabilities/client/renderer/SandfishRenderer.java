@@ -1,4 +1,4 @@
-package tfar.deathabilities.client;
+package tfar.deathabilities.client.renderer;
 
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
