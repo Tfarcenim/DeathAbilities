@@ -1,9 +1,13 @@
 {
   "block.deathabilities.quicksand": "Quicksand",
   "entity.deathabilities.dolphin_with_legs": "Dolphin With Legs",
+  "entity.deathabilities.fire_dragon_fireball": "Fire Dragon Fireball",
+  "entity.deathabilities.lightning_vex": "Lightning Vex",
   "entity.deathabilities.quicksand_bomb": "Quicksand Bomb",
+  "entity.deathabilities.sandfish": "Sandfish",
   "item.deathabilities.earth_scroll": "Earth Scroll",
   "item.deathabilities.fire_scroll": "Fire Scroll",
+  "item.deathabilities.lightning_bolt": "Lightning Bolt",
   "item.deathabilities.lightning_scroll": "Lightning Scroll",
   "item.deathabilities.quicksand_bomb": "Quicksand Bomb",
   "item.deathabilities.water_scroll": "Water Scroll"

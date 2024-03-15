@@ -18,13 +18,10 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.TargetGoal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -33,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class LightningVexEntity extends Monster implements TraceableEntity {
     public static final float FLAP_DEGREES_PER_TICK = 45.836624F;
@@ -41,7 +39,7 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
     private static final int FLAG_IS_CHARGING = 1;
     private static final double RIDING_OFFSET = 0.4D;
     @Nullable
-    Mob owner;
+    LivingEntity owner;
     @Nullable
     private BlockPos boundOrigin;
     private boolean hasLimitedLife;
@@ -93,9 +91,7 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
         this.goalSelector.addGoal(8, new VexRandomMoveGoal());
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, Raider.class)).setAlertOthers());
-        this.targetSelector.addGoal(2, new VexCopyOwnerTargetGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(4, new AttackEverythingButOwnerGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -144,7 +140,7 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
      */
     @Override
     @Nullable
-    public Mob getOwner() {
+    public LivingEntity getOwner() {
         return this.owner;
     }
 
@@ -181,7 +177,7 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
         this.setVexFlag(1, pCharging);
     }
 
-    public void setOwner(Mob pOwner) {
+    public void setOwner(LivingEntity pOwner) {
         this.owner = pOwner;
     }
 
@@ -310,32 +306,6 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
         }
     }
 
-    class VexCopyOwnerTargetGoal extends TargetGoal {
-        private final TargetingConditions copyOwnerTargeting = TargetingConditions.forNonCombat().ignoreLineOfSight().ignoreInvisibilityTesting();
-
-        public VexCopyOwnerTargetGoal(PathfinderMob pMob) {
-            super(pMob, false);
-        }
-
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
-        @Override
-        public boolean canUse() {
-            return LightningVexEntity.this.owner != null && LightningVexEntity.this.owner.getTarget() != null && this.canAttack(LightningVexEntity.this.owner.getTarget(), this.copyOwnerTargeting);
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        @Override
-        public void start() {
-            LightningVexEntity.this.setTarget(LightningVexEntity.this.owner.getTarget());
-            super.start();
-        }
-    }
-
     class VexMoveControl extends MoveControl {
         public VexMoveControl(LightningVexEntity pVex) {
             super(pVex);
@@ -366,6 +336,30 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
             }
         }
     }
+
+    static class AttackEverythingButOwnerGoal extends NearestAttackableTargetGoal<LivingEntity> {
+        public AttackEverythingButOwnerGoal(LightningVexEntity vex) {
+            super(vex, LivingEntity.class, 0, true, true, makeCanAttackPredicate(vex));
+        }
+
+        private static Predicate<LivingEntity> makeCanAttackPredicate(LightningVexEntity lightningVexEntity){
+            return target -> {
+                if (!target.attackable() || target instanceof LightningVexEntity) return false;
+                if (lightningVexEntity.getOwner() == target) return false;
+                if (lightningVexEntity.level().dimension() == Level.END && target instanceof EnderMan) return false;
+                return true;
+            };
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            super.start();
+            this.mob.setNoActionTime(0);
+        }
+    }
+
 
     class VexRandomMoveGoal extends Goal {
         public VexRandomMoveGoal() {

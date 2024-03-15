@@ -29,11 +29,15 @@ public class ModLangProvider extends LanguageProvider {
         addDefaultItem(() -> ModItems.LIGHTNING_SCROLL);
         addDefaultItem(() -> ModItems.WATER_SCROLL);
         addDefaultItem(() -> ModItems.QUICKSAND_BOMB);
+        addDefaultItem(() -> ModItems.LIGHTNING_BOLT);
 
         addDefaultBlock(() -> ModBlocks.QUICKSAND);
 
         addEntityType(() -> ModEntityTypes.DOLPHIN_WITH_LEGS,"Dolphin With Legs");
         addEntityType(() -> ModEntityTypes.QUICKSAND_BOMB,"Quicksand Bomb");
+        addEntityType(() -> ModEntityTypes.LIGHTNING_VEX,"Lightning Vex");
+        addEntityType(() -> ModEntityTypes.SANDFISH,"Sandfish");
+        addEntityType(() -> ModEntityTypes.FIRE_DRAGON_FIREBALL,"Fire Dragon Fireball");
 
     }
 
