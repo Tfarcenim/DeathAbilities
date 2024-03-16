@@ -34,6 +34,9 @@ public class DeathAbilitiesClientForge {
         EntityRenderers.register(ModEntityTypes.QUICKSAND_BOMB, ThrownItemRenderer::new);
         EntityRenderers.register(ModEntityTypes.SANDFISH, SandfishRenderer::new);
         EntityRenderers.register(ModEntityTypes.FIRE_DRAGON_FIREBALL, (ctx) -> new ThrownItemRenderer<>(ctx, 3.0F, true));
+        EntityRenderers.register(ModEntityTypes.WATER_DRAGON_FIREBALL, (ctx) -> new ThrownItemRenderer<>(ctx, 3.0F, true));
+        EntityRenderers.register(ModEntityTypes.LIGHTNING_DRAGON_FIREBALL, (ctx) -> new ThrownItemRenderer<>(ctx, 3.0F, true));
+
         EntityRenderers.register(ModEntityTypes.LIGHTNING_VEX, LightningVexRenderer::new);
         EntityRenderers.register(ModEntityTypes.LIGHTNING_BOLT, LightningBoltRenderer::new);
     }

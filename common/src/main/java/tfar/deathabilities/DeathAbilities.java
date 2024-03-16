@@ -2,14 +2,14 @@ package tfar.deathabilities;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.deathabilities.ducks.EnderDragonDuck;
+import tfar.deathabilities.ducks.MobEntityDuck;
 import tfar.deathabilities.ducks.PlayerDuck;
 import tfar.deathabilities.init.ModBlocks;
 import tfar.deathabilities.init.ModEntityTypes;
@@ -34,6 +35,7 @@ public class DeathAbilities {
     public static final String MOD_NAME = "DeathAbilities";
     public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
     public static boolean enable_dragon = true;
+    public static int damage_per_stage = 25;
 
     // The loader specific projects are able to import and use any code from the common project. This allows you to
     // write the majority of your code here and load it from your loader specific projects. This example has some
@@ -47,13 +49,25 @@ public class DeathAbilities {
         Services.PLATFORM.superRegister(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE, EntityType.class);
     }
 
-    public static void onDamage(DamageSource source, LivingEntity living) {
-        if (living instanceof Player player) {
+    public static void onDamage(DamageSource source, LivingEntity living, float damage) {
+        Entity attacker = source.getEntity();
+        if (attacker instanceof Player player) {
             PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
             if (playerDeathAbilities.isEnabled(DeathAbility.lightning) && player.getMainHandItem().is(Items.LIGHTNING_ROD)) {
-
+                if (living instanceof Mob mob) {
+                    MobEntityDuck.of(mob).setTargetHunters(true);
+                    if (mob.getTarget() == player) {
+                        mob.setTarget(null);
+                    }
+                }
             }
         }
+
+        if (living instanceof EnderDragon enderDragon) {
+            EnderDragonDuck enderDragonDuck = EnderDragonDuck.of(enderDragon);
+            enderDragonDuck.addDamage(damage);
+        }
+
     }
 
     public static boolean onDeath(DamageSource source, LivingEntity living) {
@@ -73,6 +87,25 @@ public class DeathAbilities {
             if (enderDragonDuck.getPhase() == DeathAbility.fire) {
                 flame.addEffect(new MobEffectInstance(ModMobEffects.BURNING));
                 flame.setParticle(ParticleTypes.FLAME);
+            }
+        }
+    }
+
+    public static void cloudTick(AreaEffectCloud areaEffectCloud,DeathAbility deathAbility) {
+        if (!areaEffectCloud.level().isClientSide) {
+            switch (deathAbility) {
+                case water -> {
+                    if (areaEffectCloud.tickCount % 20 == 0) {
+                        Guardian guardian = EntityType.GUARDIAN.spawn((ServerLevel) areaEffectCloud.level(), areaEffectCloud.blockPosition(), MobSpawnType.COMMAND);
+                    }
+                }
+                case lightning -> {
+                    if (areaEffectCloud.tickCount % 10 == 0) {
+                        LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(areaEffectCloud.level());
+                        lightningBolt.setPos(areaEffectCloud.position());
+                        areaEffectCloud.level().addFreshEntity(lightningBolt);
+                    }
+                }
             }
         }
     }

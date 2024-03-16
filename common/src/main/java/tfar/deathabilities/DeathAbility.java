@@ -9,9 +9,9 @@ import net.minecraft.world.item.Item;
 import tfar.deathabilities.init.ModItems;
 
 public enum DeathAbility {
+    fire(DamageTypeTags.IS_FIRE, ModItems.FIRE_SCROLL),
     water(DamageTypeTags.IS_DROWNING, ModItems.WATER_SCROLL),
     earth(ModTags.IS_SUFFOCATION, ModItems.EARTH_SCROLL),
-    fire(DamageTypeTags.IS_FIRE, ModItems.FIRE_SCROLL),
     lightning(DamageTypeTags.IS_LIGHTNING, ModItems.LIGHTNING_SCROLL);
 
     private final TagKey<DamageType> tagKey;

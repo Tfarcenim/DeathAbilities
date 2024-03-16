@@ -10,5 +10,6 @@ public interface EnderDragonDuck {
     static EnderDragonDuck of(EnderDragon enderDragon) {
         return (EnderDragonDuck) enderDragon;
     }
+    void addDamage(float damage);
 
 }

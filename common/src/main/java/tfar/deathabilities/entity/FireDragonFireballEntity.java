@@ -1,6 +1,7 @@
 package tfar.deathabilities.entity;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,10 +44,10 @@ public class FireDragonFireballEntity extends Fireball {
         super.onHitEntity(pResult);
         if (!this.level().isClientSide) {
             Entity entity = pResult.getEntity();
-            Entity entity1 = this.getOwner();
-            entity.hurt(this.damageSources().fireball(this, entity1), 6.0F);
-            if (entity1 instanceof LivingEntity) {
-                this.doEnchantDamageEffects((LivingEntity)entity1, entity);
+            Entity owner = this.getOwner();
+            entity.hurt(this.damageSources().fireball(this, owner), 6.0F);
+            if (owner instanceof LivingEntity) {
+                this.doEnchantDamageEffects((LivingEntity)owner, entity);
             }
 
         }
@@ -62,7 +63,7 @@ public class FireDragonFireballEntity extends Fireball {
      */
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("ExplosionPower", 99)) {
+        if (pCompound.contains("ExplosionPower", Tag.TAG_ANY_NUMERIC)) {
             this.explosionPower = pCompound.getByte("ExplosionPower");
         }
 

@@ -27,10 +27,7 @@ import tfar.deathabilities.client.DeathAbilitiesClientForge;
 import tfar.deathabilities.data.Datagen;
 import tfar.deathabilities.ducks.EnderDragonDuck;
 import tfar.deathabilities.ducks.MobEntityDuck;
-import tfar.deathabilities.entity.DolphinWithLegsEntity;
-import tfar.deathabilities.entity.FireDragonFireballEntity;
-import tfar.deathabilities.entity.LightningVexEntity;
-import tfar.deathabilities.entity.SandFishEntity;
+import tfar.deathabilities.entity.*;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.network.PacketHandlerForge;
 import tfar.deathabilities.platform.Services;
@@ -79,6 +76,14 @@ public class DeathAbilitiesForge {
                                 entity.level().addFreshEntity(new FireDragonFireballEntity(entity.level(),enderDragon,
                                         dragonFireball.xPower,dragonFireball.yPower,dragonFireball.zPower,2));
                             }
+                            case water -> {
+                                entity.level().addFreshEntity(new WaterDragonFireballEntity(entity.level(),enderDragon,
+                                        dragonFireball.xPower,dragonFireball.yPower,dragonFireball.zPower,2));
+                            }
+                            case lightning -> {
+                                entity.level().addFreshEntity(new LightningDragonFireballEntity(entity.level(),enderDragon,
+                                        dragonFireball.xPower,dragonFireball.yPower,dragonFireball.zPower,2));
+                            }
                         }
                     }
                     event.setCanceled(true);
@@ -95,7 +100,7 @@ public class DeathAbilitiesForge {
     }
 
     private void onDamage(LivingDamageEvent event) {
-        DeathAbilities.onDamage(event.getSource(),event.getEntity());
+        DeathAbilities.onDamage(event.getSource(),event.getEntity(),event.getAmount());
     }
 
     private void changeTarget(LivingChangeTargetEvent event) {
