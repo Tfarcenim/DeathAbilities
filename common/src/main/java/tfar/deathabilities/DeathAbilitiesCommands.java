@@ -11,7 +11,6 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 import tfar.deathabilities.ducks.PlayerDuck;
-import tfar.deathabilities.network.ModPacket;
 import tfar.deathabilities.network.S2CActivateItemPacket;
 import tfar.deathabilities.platform.Services;
 
@@ -30,7 +29,15 @@ public class DeathAbilitiesCommands {
                         .then(Commands.literal("disable")
                                 .then(Commands.argument("ability", StringArgumentType.string()).suggests(ENABLED_EFFECTS)
                                         .executes(DeathAbilitiesCommands::disableAbility)))
-                ));
+                        .then(Commands.literal("runner")
+                                        .executes(DeathAbilitiesCommands::setRunner)))
+                );
+    }
+
+    private static int setRunner(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(commandContext, "player");
+        HunterData.runner = player.getUUID();
+        return 1;
     }
 
     private static int enableAbility(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {

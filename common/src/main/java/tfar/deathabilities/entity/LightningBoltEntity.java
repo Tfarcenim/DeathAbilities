@@ -83,6 +83,7 @@ public class LightningBoltEntity extends AbstractArrow {
         if (lightningbolt != null) {
             lightningbolt.moveTo(vec3);
             lightningbolt.setCause(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
+            lightningbolt.setVisualOnly(true);
             this.level().addFreshEntity(lightningbolt);
             soundevent = SoundEvents.TRIDENT_THUNDER;
             volume = 5.0F;
@@ -90,6 +91,7 @@ public class LightningBoltEntity extends AbstractArrow {
                 LightningVexEntity lightningVexEntity = ModEntityTypes.LIGHTNING_VEX.create(level());
                 lightningVexEntity.setOwner(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
                 lightningVexEntity.setPos(vec3);
+                lightningVexEntity.setLimitedLife(300);
                 level().addFreshEntity(lightningVexEntity);
             }
         }

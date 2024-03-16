@@ -1,19 +1,28 @@
 package tfar.deathabilities;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import tfar.deathabilities.ducks.EnderDragonDuck;
+import tfar.deathabilities.ducks.PlayerDuck;
 import tfar.deathabilities.init.ModBlocks;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
+import tfar.deathabilities.init.ModMobEffects;
 import tfar.deathabilities.platform.Services;
-import net.minecraft.core.registries.BuiltInRegistries;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -32,16 +41,38 @@ public class DeathAbilities {
     public static void init() {
         Services.PLATFORM.superRegister(ModBlocks.class,BuiltInRegistries.BLOCK, Block.class);
         Services.PLATFORM.superRegister(ModItems.class, BuiltInRegistries.ITEM, Item.class);
+        Services.PLATFORM.superRegister(ModMobEffects.class, BuiltInRegistries.MOB_EFFECT, MobEffect.class);
         //Services.PLATFORM.superRegister(ModCreativeTabs.class, BuiltInRegistries.CREATIVE_MODE_TAB, CreativeModeTab.class);
         //Services.PLATFORM.superRegister(ModEnchantments.class, BuiltInRegistries.ENCHANTMENT, Enchantment.class);
         Services.PLATFORM.superRegister(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE, EntityType.class);
     }
 
-    public static void onDeath(DamageSource source, LivingEntity living) {
+    public static void onDamage(DamageSource source, LivingEntity living) {
+        if (living instanceof Player player) {
+            PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
+            if (playerDeathAbilities.isEnabled(DeathAbility.lightning) && player.getMainHandItem().is(Items.LIGHTNING_ROD)) {
+
+            }
+        }
+    }
+
+    public static boolean onDeath(DamageSource source, LivingEntity living) {
         if (living instanceof Player player) {
             DeathAbility deathAbility = DeathAbility.getDeathInfo(source);
             if (deathAbility != null) {
                 DeathAbilitiesCommands.enableAbility((ServerPlayer) player, deathAbility);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void handleFireBreath(EnderDragon enderDragon, AreaEffectCloud flame) {
+        if (enable_dragon) {
+            EnderDragonDuck enderDragonDuck = EnderDragonDuck.of(enderDragon);
+            if (enderDragonDuck.getPhase() == DeathAbility.fire) {
+                flame.addEffect(new MobEffectInstance(ModMobEffects.BURNING));
+                flame.setParticle(ParticleTypes.FLAME);
             }
         }
     }

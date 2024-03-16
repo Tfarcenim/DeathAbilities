@@ -4,6 +4,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.projectile.DragonFireball;
 import net.minecraft.world.level.Level;
@@ -11,7 +13,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +26,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import tfar.deathabilities.client.DeathAbilitiesClientForge;
 import tfar.deathabilities.data.Datagen;
 import tfar.deathabilities.ducks.EnderDragonDuck;
+import tfar.deathabilities.ducks.MobEntityDuck;
 import tfar.deathabilities.entity.DolphinWithLegsEntity;
 import tfar.deathabilities.entity.FireDragonFireballEntity;
 import tfar.deathabilities.entity.LightningVexEntity;
@@ -49,8 +54,10 @@ public class DeathAbilitiesForge {
         bus.addListener(Datagen::gather);
         bus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::onDeath);
+        MinecraftForge.EVENT_BUS.addListener(this::onDamage);
         MinecraftForge.EVENT_BUS.addListener(this::commands);
         MinecraftForge.EVENT_BUS.addListener(this::entityJoinWorld);
+        MinecraftForge.EVENT_BUS.addListener(this::changeTarget);
         if (Services.PLATFORM.isPhysicalClient()) {
             DeathAbilitiesClientForge.events(bus);
         }
@@ -87,8 +94,27 @@ public class DeathAbilitiesForge {
         PacketHandlerForge.registerMessages();
     }
 
-    private void onDeath(LivingDamageEvent event) {
-        DeathAbilities.onDeath(event.getSource(),event.getEntity());
+    private void onDamage(LivingDamageEvent event) {
+        DeathAbilities.onDamage(event.getSource(),event.getEntity());
+    }
+
+    private void changeTarget(LivingChangeTargetEvent event) {
+        LivingEntity originalTarget = event.getOriginalTarget();
+        if (event.getTargetType() == LivingChangeTargetEvent.LivingTargetType.MOB_TARGET) {
+            LivingEntity attacker = event.getEntity();
+            if (attacker instanceof Mob mob) {
+                MobEntityDuck mobEntityDuck = MobEntityDuck.of(mob);
+                if (mobEntityDuck.targetHunters() && originalTarget.getUUID().equals(HunterData.runner)) {
+                    mob.setTarget(null);
+                }
+            }
+        }
+    }
+
+    private void onDeath(LivingDeathEvent event) {
+        if(DeathAbilities.onDeath(event.getSource(),event.getEntity())) {
+            event.setCanceled(true);
+        }
     }
 
     public static Map<Registry<?>, List<Pair<ResourceLocation, Supplier<?>>>> registerLater = new HashMap<>();

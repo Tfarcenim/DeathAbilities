@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -30,6 +31,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class LightningVexEntity extends Monster implements TraceableEntity {
@@ -77,10 +79,23 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
         this.noPhysics = false;
         this.setNoGravity(true);
         if (this.hasLimitedLife && --this.limitedLifeTicks <= 0) {
-            this.limitedLifeTicks = 20;
-            this.hurt(this.damageSources().starve(), 1.0F);
+            strikeNearbyEntity();
+            discard();
         }
+    }
 
+    protected void strikeNearbyEntity() {
+        List<Entity> nearby = level().getEntities(this,getBoundingBox().inflate(10), e -> e instanceof LivingEntity l && AttackEverythingButOwnerGoal.makeCanAttackPredicate(this).test(l));
+        if (!nearby.isEmpty()) {
+            LivingEntity first = (LivingEntity) nearby.get(0);
+            LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(this.level());
+            if (lightningbolt != null) {
+                lightningbolt.moveTo(first.position());
+                lightningbolt.setCause(owner instanceof ServerPlayer ? (ServerPlayer) owner : null);
+                this.level().addFreshEntity(lightningbolt);
+                this.level().explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 2, Level.ExplosionInteraction.TNT);
+            }
+        }
     }
 
     @Override
@@ -166,15 +181,15 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
             i &= ~pMask;
         }
 
-        this.entityData.set(DATA_FLAGS_ID, (byte)(i & 255));
+        this.entityData.set(DATA_FLAGS_ID, (byte)(i & 0xff));
     }
 
     public boolean isCharging() {
-        return this.getVexFlag(1);
+        return this.getVexFlag(FLAG_IS_CHARGING);
     }
 
     public void setIsCharging(boolean pCharging) {
-        this.setVexFlag(1, pCharging);
+        this.setVexFlag(FLAG_IS_CHARGING, pCharging);
     }
 
     public void setOwner(LivingEntity pOwner) {
@@ -346,6 +361,9 @@ public class LightningVexEntity extends Monster implements TraceableEntity {
             return target -> {
                 if (!target.attackable() || target instanceof LightningVexEntity) return false;
                 if (lightningVexEntity.getOwner() == target) return false;
+
+                if (target instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() == lightningVexEntity.getOwner()) return false;
+
                 if (lightningVexEntity.level().dimension() == Level.END && target instanceof EnderMan) return false;
                 return true;
             };
