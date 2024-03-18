@@ -1,10 +1,14 @@
 package tfar.deathabilities.mixin;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.DeathAbility;
 import tfar.deathabilities.ducks.EnderDragonDuck;
@@ -29,10 +33,20 @@ public abstract class EnderDragonMixin extends LivingEntity implements EnderDrag
     @Override
     public void addDamage(float damage) {
         totalDamage += damage;
+    }
+
+    public void checkPhase() {
         int i = (int) (totalDamage/ DeathAbilities.damage_per_stage) % DeathAbility.values().length;//(0 - 3)
         DeathAbility newA = DeathAbility.values()[i];
         if (newA != phase) {
             setPhase(newA);
+        }
+    }
+
+    @Inject(method = "aiStep",at = @At("RETURN"))
+    private void tickEvent(CallbackInfo ci) {
+        if (!level().isClientSide) {
+            checkPhase();
         }
     }
 
@@ -43,5 +57,13 @@ public abstract class EnderDragonMixin extends LivingEntity implements EnderDrag
             Services.PLATFORM.sendToTrackingClients(new S2CSyncDragonAbilityPacket(this,phase), this);
     }
 
+    @Inject(method = "addAdditionalSaveData",at = @At("RETURN"))
+    private void addModData(CompoundTag tag, CallbackInfo ci) {
+        tag.putFloat("totalDamage",totalDamage);
+    }
 
+    @Inject(method = "readAdditionalSaveData",at = @At("RETURN"))
+    private void readModData(CompoundTag tag, CallbackInfo ci) {
+        totalDamage = tag.getFloat("totalDamage");
+    }
 }

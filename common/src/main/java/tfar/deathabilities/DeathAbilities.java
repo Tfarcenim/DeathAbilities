@@ -14,8 +14,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tfar.deathabilities.ducks.AreaEffectCloudDuck;
 import tfar.deathabilities.ducks.EnderDragonDuck;
 import tfar.deathabilities.ducks.MobEntityDuck;
 import tfar.deathabilities.ducks.PlayerDuck;
@@ -24,6 +26,8 @@ import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
 import tfar.deathabilities.init.ModMobEffects;
 import tfar.deathabilities.platform.Services;
+
+import java.util.List;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -84,9 +88,19 @@ public class DeathAbilities {
     public static void handleFireBreath(EnderDragon enderDragon, AreaEffectCloud flame) {
         if (enable_dragon) {
             EnderDragonDuck enderDragonDuck = EnderDragonDuck.of(enderDragon);
-            if (enderDragonDuck.getPhase() == DeathAbility.fire) {
-                flame.addEffect(new MobEffectInstance(ModMobEffects.BURNING));
-                flame.setParticle(ParticleTypes.FLAME);
+            DeathAbility phase = enderDragonDuck.getPhase();
+
+            AreaEffectCloudDuck areaEffectCloudDuck = AreaEffectCloudDuck.of(flame);
+            areaEffectCloudDuck.setType(phase);
+
+            switch (phase) {
+                case fire -> {
+                    flame.addEffect(new MobEffectInstance(ModMobEffects.BURNING));
+                    flame.setParticle(ParticleTypes.FLAME);
+                }
+                case lightning -> {
+                    flame.setParticle(ParticleTypes.END_ROD);
+                }
             }
         }
     }
@@ -101,8 +115,16 @@ public class DeathAbilities {
                 }
                 case lightning -> {
                     if (areaEffectCloud.tickCount % 10 == 0) {
+                        List<LivingEntity> entities = areaEffectCloud.level().getEntitiesOfClass(LivingEntity.class, areaEffectCloud.getBoundingBox());
+
+                        Vec3 pos = areaEffectCloud.position();
+
+                        if (!entities.isEmpty()) {
+                            pos = entities.get(0).position();
+                        }
+
                         LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(areaEffectCloud.level());
-                        lightningBolt.setPos(areaEffectCloud.position());
+                        lightningBolt.setPos(pos);
                         areaEffectCloud.level().addFreshEntity(lightningBolt);
                     }
                 }
