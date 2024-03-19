@@ -53,6 +53,17 @@ public class DeathAbilities {
         Services.PLATFORM.superRegister(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE, EntityType.class);
     }
 
+    public static void onClone(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean wasDeath) {
+        PlayerDuck playerDuck1 = PlayerDuck.of(oldPlayer);
+        PlayerDuck playerDuck2 = PlayerDuck.of(newPlayer);
+
+        playerDuck2.setDeathAbilities(playerDuck1.getDeathAbilities());//copy abilities
+        PlayerDeathAbilities playerDeathAbilities = playerDuck2.getDeathAbilities();
+        for (DeathAbility deathAbility : playerDeathAbilities.getEnabled()) {
+            deathAbility.onEnable.accept(newPlayer);
+        }
+    }
+
     public static void onDamage(DamageSource source, LivingEntity living, float damage) {
         Entity attacker = source.getEntity();
         if (attacker instanceof Player player) {

@@ -47,7 +47,7 @@ public class DolphinWithLegsEntity extends PathfinderMob implements OwnableEntit
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30).add(Attributes.MOVEMENT_SPEED, 1.35 * 0.25).add(Attributes.ATTACK_DAMAGE, 3);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30).add(Attributes.MOVEMENT_SPEED, 0.5).add(Attributes.ATTACK_DAMAGE, 3);
     }
 
     protected void defineSynchedData() {

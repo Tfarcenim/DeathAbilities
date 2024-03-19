@@ -17,6 +17,6 @@ public class ModItems {
     public static final Item LIGHTNING_SCROLL = new Item(new Item.Properties());
     public static final Item WATER_SCROLL = new Item(new Item.Properties());
     public static final Item LIGHTNING_BOLT = new LightningBoltItem(new Item.Properties());
-    public static final Item BEEFO_SUMMONER = new BeefoSummonerItem(new Item.Properties());
+    public static final Item COPPER_DOLPHIN = new BeefoSummonerItem(new Item.Properties());
 
 }

@@ -3,6 +3,7 @@ package tfar.deathabilities;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -16,6 +17,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -55,11 +57,16 @@ public class DeathAbilitiesForge {
         MinecraftForge.EVENT_BUS.addListener(this::commands);
         MinecraftForge.EVENT_BUS.addListener(this::entityJoinWorld);
         MinecraftForge.EVENT_BUS.addListener(this::changeTarget);
+        MinecraftForge.EVENT_BUS.addListener(this::onClone);
         if (Services.PLATFORM.isPhysicalClient()) {
             DeathAbilitiesClientForge.events(bus);
         }
         // Use Forge to bootstrap the Common mod.
         DeathAbilities.init();
+    }
+
+    private void onClone(PlayerEvent.Clone event) {
+        DeathAbilities.onClone((ServerPlayer) event.getOriginal(),(ServerPlayer) event.getEntity(),event.isWasDeath());
     }
 
     private void entityJoinWorld(EntityJoinLevelEvent event) {

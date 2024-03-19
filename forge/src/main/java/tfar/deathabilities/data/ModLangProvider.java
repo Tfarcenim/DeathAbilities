@@ -31,7 +31,7 @@ public class ModLangProvider extends LanguageProvider {
         addDefaultItem(() -> ModItems.QUICKSAND_BOMB);
         addDefaultItem(() -> ModItems.LIGHTNING_BOLT);
         addDefaultItem(() -> ModItems.WATER_WAND);
-        addDefaultItem(() -> ModItems.BEEFO_SUMMONER);
+        addDefaultItem(() -> ModItems.COPPER_DOLPHIN);
 
         addDefaultBlock(() -> ModBlocks.QUICKSAND);
 
