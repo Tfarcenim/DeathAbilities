@@ -1,0 +1,6 @@
+{
+  "parent": "deathabilities:item/full_water_wand",
+  "textures": {
+    "layer0": "deathabilities:item/water_wand"
+  }
+}

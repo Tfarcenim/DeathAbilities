@@ -5,10 +5,12 @@
   "entity.deathabilities.lightning_vex": "Lightning Vex",
   "entity.deathabilities.quicksand_bomb": "Quicksand Bomb",
   "entity.deathabilities.sandfish": "Sandfish",
+  "item.deathabilities.beefo_summoner": "Beefo Summoner",
   "item.deathabilities.earth_scroll": "Earth Scroll",
   "item.deathabilities.fire_scroll": "Fire Scroll",
   "item.deathabilities.lightning_bolt": "Lightning Bolt",
   "item.deathabilities.lightning_scroll": "Lightning Scroll",
   "item.deathabilities.quicksand_bomb": "Quicksand Bomb",
-  "item.deathabilities.water_scroll": "Water Scroll"
+  "item.deathabilities.water_scroll": "Water Scroll",
+  "item.deathabilities.water_wand": "Water Wand"
 }

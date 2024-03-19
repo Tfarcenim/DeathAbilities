@@ -1,4 +1,4 @@
-// 1.20.1	2024-03-14T04:05:05.6399321	Model Definitions
+// 1.20.1	2024-03-19T02:50:01.8584632	Model Definitions
 53598de708a791b376673a2b107caa5846895c04 assets/deathabilities/blockstates/quicksand.json
 03a48e0faf279c1f30c9a1b9478452ec8c695b57 assets/deathabilities/models/block/quicksand.json
 16caf93f02ebb1afdbf06f60d1715fa164c00ccc assets/deathabilities/models/item/earth_scroll.json
@@ -6,3 +6,4 @@
 da0c27dfc97ec651b019ca285177178796c18b0d assets/deathabilities/models/item/lightning_scroll.json
 2578f346aa0c385fdc20a0341a41d0bfe0023f7f assets/deathabilities/models/item/quicksand.json
 e139166fd849246655ed9cb3488417830a7c2853 assets/deathabilities/models/item/water_scroll.json
+acd5445c6ad914e74164f94f3c4c8b22d9c5dcf4 assets/deathabilities/models/item/water_wand.json

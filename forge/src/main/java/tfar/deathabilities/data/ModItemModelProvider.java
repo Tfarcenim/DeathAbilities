@@ -6,8 +6,10 @@ import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.init.ModItems;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -21,6 +23,8 @@ public class ModItemModelProvider extends ItemModelGenerators {
     public void run() {
         this.generateFlatItems(ModItems.EARTH_SCROLL,ModItems.FIRE_SCROLL,ModItems.LIGHTNING_SCROLL,ModItems.WATER_SCROLL
                 );
+
+        generateFlatItem(ModItems.WATER_WAND,FULL_WATER_WAND_TEMPLATE);
     }
 
     public void makePerspectiveModel(Item item, ModelTemplate template) {
@@ -150,16 +154,16 @@ public class ModItemModelProvider extends ItemModelGenerators {
     public static final ModelTemplate LARGE_FLAT_HANDHELD_ITEM = createItem(WarSmith.MOD_ID,"large_handheld", TextureSlot.LAYER0);
     public static final ModelTemplate EXTRA_LARGE_FLAT_HANDHELD_ITEM = createItem(WarSmith.MOD_ID,"extra_large_handheld", TextureSlot.LAYER0);
 
-
-    public static final ModelTemplate TWO_LAYERED_HANDHELD_ITEM = createItem("handheld", TextureSlot.LAYER0, TextureSlot.LAYER1);
+*/
+    public static final ModelTemplate FULL_WATER_WAND_TEMPLATE = createItem(new ResourceLocation(DeathAbilities.MOD_ID,"full_water_wand"), TextureSlot.LAYER0);
 
     private static ModelTemplate createItem(String pItemModelLocation, TextureSlot... pRequiredSlots) {
-        return new ModelTemplate(Optional.of(new ResourceLocation("minecraft", "item/" + pItemModelLocation)), Optional.empty(), pRequiredSlots);
+        return createItem(new ResourceLocation(pItemModelLocation),pRequiredSlots);
     }
 
-    private static ModelTemplate createItem(String domain, String pItemModelLocation, TextureSlot... pRequiredSlots) {
-        return new ModelTemplate(Optional.of(new ResourceLocation(domain, "item/" + pItemModelLocation)), Optional.empty(), pRequiredSlots);
-    }*/
+    private static ModelTemplate createItem(ResourceLocation pItemModelLocation, TextureSlot... pRequiredSlots) {
+        return new ModelTemplate(Optional.of(pItemModelLocation.withPrefix("item/")), Optional.empty(), pRequiredSlots);
+    }
 
 
 }
