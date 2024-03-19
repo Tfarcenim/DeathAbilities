@@ -13,6 +13,7 @@ public class ModEntityTypes {
     public static final EntityType<FireDragonFireballEntity> FIRE_DRAGON_FIREBALL = EntityType.Builder.<FireDragonFireballEntity>of(FireDragonFireballEntity::new,MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10).build("");
     public static final EntityType<WaterDragonFireballEntity> WATER_DRAGON_FIREBALL = EntityType.Builder.<WaterDragonFireballEntity>of(WaterDragonFireballEntity::new,MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10).build("");
     public static final EntityType<LightningDragonFireballEntity> LIGHTNING_DRAGON_FIREBALL = EntityType.Builder.<LightningDragonFireballEntity>of(LightningDragonFireballEntity::new,MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10).build("");
+    public static final EntityType<EarthDragonFireballEntity> EARTH_DRAGON_FIREBALL = EntityType.Builder.<EarthDragonFireballEntity>of(EarthDragonFireballEntity::new,MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10).build("");
 
     public static final EntityType<LightningVexEntity> LIGHTNING_VEX = EntityType.Builder.<LightningVexEntity>of(LightningVexEntity::new,MobCategory.MONSTER).fireImmune().sized(0.4F, 0.8F).clientTrackingRange(8).build("");
     public static final EntityType<LightningBoltEntity> LIGHTNING_BOLT = EntityType.Builder.<LightningBoltEntity>of(LightningBoltEntity::new,MobCategory.MISC).fireImmune().sized(0.4F, 0.8F).clientTrackingRange(8).build("");

@@ -1,5 +1,6 @@
 package tfar.deathabilities.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -7,28 +8,62 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.phys.EntityHitResult;
-import tfar.deathabilities.DeathAbility;
-import tfar.deathabilities.ducks.AreaEffectCloudDuck;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import tfar.deathabilities.init.ModEntityTypes;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class WaterDragonFireballEntity extends AbstractDragonFireballEntity {
+public class EarthDragonFireballEntity extends AbstractDragonFireballEntity {
 
-    public WaterDragonFireballEntity(EntityType<? extends WaterDragonFireballEntity> pEntityType, Level pLevel) {
+    public EarthDragonFireballEntity(EntityType<? extends EarthDragonFireballEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public WaterDragonFireballEntity(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ, int pExplosionPower) {
-        super(ModEntityTypes.WATER_DRAGON_FIREBALL, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel,pExplosionPower);
+    public EarthDragonFireballEntity(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ, int pExplosionPower) {
+        super(ModEntityTypes.EARTH_DRAGON_FIREBALL, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel, pExplosionPower);
     }
 
     @Override
+    protected void onHit(HitResult pResult) {
+        super.onHit(pResult);
+        if (!level().isClientSide) {
+            createCrater();
+        }
+    }
+
+    protected void createCrater() {
+        Set<BlockPos> affected = new HashSet<>();
+
+        int r = 2;
+        for (int y = -r; y <= 1;y++){
+            for (int z = -r;z < r;z++) {
+                for (int x = -r;x < r;x++) {
+                    BlockPos pos = new BlockPos(blockPosition().getX()+x,blockPosition().getY()+y,blockPosition().getZ()+z);
+                    affected.add(pos);
+                }
+            }
+        }
+
+        affected.add(blockPosition().below());
+
+        for (BlockPos pos : affected) {
+            FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level(),pos,level().getBlockState(pos));
+            fallingBlockEntity.addDeltaMovement(new Vec3(0,0.15,0));
+            this.level().explode(this, this.getX(), this.getY() - r, this.getZ(), (float)this.pExplosionPower, true, Level.ExplosionInteraction.NONE);
+        }
+    }
+
+
+
+    @Override
     protected void createAreaOfEffectCloud() {
-        super.createAreaOfEffectCloud();
         List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
         AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
         Entity entity = this.getOwner();
@@ -36,12 +71,12 @@ public class WaterDragonFireballEntity extends AbstractDragonFireballEntity {
             areaeffectcloud.setOwner((LivingEntity)entity);
         }
 
-        areaeffectcloud.setParticle(ParticleTypes.FALLING_WATER);
+        areaeffectcloud.setParticle(ParticleTypes.END_ROD);
         areaeffectcloud.setRadius(3.0F);
         areaeffectcloud.setDuration(600);
         areaeffectcloud.setRadiusPerTick((7.0F - areaeffectcloud.getRadius()) / (float)areaeffectcloud.getDuration());
         areaeffectcloud.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 1));
-        AreaEffectCloudDuck.of(areaeffectcloud).setType(DeathAbility.water);
+        // AreaEffectCloudDuck.of(areaeffectcloud).setType(DeathAbility.lightning);
         if (!list.isEmpty()) {
             for(LivingEntity livingentity : list) {
                 double d0 = this.distanceToSqr(livingentity);
@@ -71,4 +106,5 @@ public class WaterDragonFireballEntity extends AbstractDragonFireballEntity {
 
         }
     }
+
 }

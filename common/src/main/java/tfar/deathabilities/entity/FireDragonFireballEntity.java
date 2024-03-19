@@ -1,26 +1,21 @@
 package tfar.deathabilities.entity;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import tfar.deathabilities.init.ModEntityTypes;
 
-public class FireDragonFireballEntity extends Fireball {
-    private int explosionPower = 1;
+public class FireDragonFireballEntity extends AbstractDragonFireballEntity {
 
     public FireDragonFireballEntity(EntityType<? extends FireDragonFireballEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public FireDragonFireballEntity(Level pLevel, LivingEntity pShooter, double pOffsetX, double pOffsetY, double pOffsetZ, int pExplosionPower) {
-        super(ModEntityTypes.FIRE_DRAGON_FIREBALL, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel);
-        this.explosionPower = pExplosionPower;
+        super(ModEntityTypes.FIRE_DRAGON_FIREBALL, pShooter, pOffsetX, pOffsetY, pOffsetZ, pLevel,pExplosionPower);
     }
 
     /**
@@ -31,10 +26,9 @@ public class FireDragonFireballEntity extends Fireball {
         if (!this.level().isClientSide) {
             // TODO 1.19.3: The creation of Level.ExplosionInteraction means this code path will fire EntityMobGriefingEvent twice. Should we try and fix it? -SS
             //boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this.getOwner());
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), (float)this.explosionPower, true, Level.ExplosionInteraction.NONE);
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), (float)this.pExplosionPower, true, Level.ExplosionInteraction.NONE);
             this.discard();
         }
-
     }
 
     /**
@@ -51,21 +45,5 @@ public class FireDragonFireballEntity extends Fireball {
             }
 
         }
-    }
-
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putByte("ExplosionPower", (byte)this.explosionPower);
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        if (pCompound.contains("ExplosionPower", Tag.TAG_ANY_NUMERIC)) {
-            this.explosionPower = pCompound.getByte("ExplosionPower");
-        }
-
     }
 }

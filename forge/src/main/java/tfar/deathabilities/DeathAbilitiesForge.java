@@ -84,6 +84,10 @@ public class DeathAbilitiesForge {
                                 entity.level().addFreshEntity(new LightningDragonFireballEntity(entity.level(),enderDragon,
                                         dragonFireball.xPower,dragonFireball.yPower,dragonFireball.zPower,2));
                             }
+                            case earth -> {
+                                entity.level().addFreshEntity(new EarthDragonFireballEntity(entity.level(),enderDragon,
+                                        dragonFireball.xPower,dragonFireball.yPower,dragonFireball.zPower,4));
+                            }
                         }
                     }
                     event.setCanceled(true);
