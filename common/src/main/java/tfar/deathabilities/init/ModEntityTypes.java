@@ -17,5 +17,5 @@ public class ModEntityTypes {
 
     public static final EntityType<LightningVexEntity> LIGHTNING_VEX = EntityType.Builder.<LightningVexEntity>of(LightningVexEntity::new,MobCategory.MONSTER).fireImmune().sized(0.4F, 0.8F).clientTrackingRange(8).build("");
     public static final EntityType<LightningBoltEntity> LIGHTNING_BOLT = EntityType.Builder.<LightningBoltEntity>of(LightningBoltEntity::new,MobCategory.MISC).fireImmune().sized(0.4F, 0.8F).clientTrackingRange(8).build("");
-
+    public static final EntityType<AttackSquid> ATTACK_SQUID = EntityType.Builder.of(AttackSquid::new,MobCategory.WATER_CREATURE).sized(0.8F, 0.8F).clientTrackingRange(8).build("");
 }

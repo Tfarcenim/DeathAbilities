@@ -148,6 +148,7 @@ public class DeathAbilitiesForge {
         event.put(ModEntityTypes.DOLPHIN_WITH_LEGS, DolphinWithLegsEntity.createAttributes().build());
         event.put(ModEntityTypes.SANDFISH, SandFishEntity.createAttributes().build());
         event.put(ModEntityTypes.LIGHTNING_VEX, LightningVexEntity.createAttributes().build());
+        event.put(ModEntityTypes.ATTACK_SQUID, AttackSquid.createAttributes().build());
     }
 
 }

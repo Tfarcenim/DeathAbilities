@@ -24,6 +24,8 @@ public class DeathAbilitiesClient {
 
     public static void registerKeybinds() {
         registerKeybind(KeyAction.SPAWN_SANDFISH, ModKeybinds.SPAWN_SANDFISH);
+        registerKeybind(KeyAction.SPAWN_ATTACK_SQUID, ModKeybinds.SPAWN_ATTACK_SQUID);
+
     }
 
     private static void registerKeybind(KeyAction action, KeyMapping keyMapping) {

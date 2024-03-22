@@ -1,6 +1,9 @@
 package tfar.deathabilities.client;
 
+import net.minecraft.client.model.SquidModel;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.SquidRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -41,6 +44,8 @@ public class DeathAbilitiesClientForge {
 
         EntityRenderers.register(ModEntityTypes.LIGHTNING_VEX, LightningVexRenderer::new);
         EntityRenderers.register(ModEntityTypes.LIGHTNING_BOLT, LightningBoltRenderer::new);
+
+        EntityRenderers.register(ModEntityTypes.ATTACK_SQUID, (context) -> new SquidRenderer<>(context, new SquidModel<>(context.bakeLayer(ModelLayers.SQUID))));
     }
 
     private static void keybinds(RegisterKeyMappingsEvent event) {

@@ -40,6 +40,8 @@ public class ModLangProvider extends LanguageProvider {
         addEntityType(() -> ModEntityTypes.LIGHTNING_VEX,"Lightning Vex");
         addEntityType(() -> ModEntityTypes.SANDFISH,"Sandfish");
         addEntityType(() -> ModEntityTypes.FIRE_DRAGON_FIREBALL,"Fire Dragon Fireball");
+        addEntityType(() -> ModEntityTypes.ATTACK_SQUID,"Attack Squid");
+
 
     }
 
