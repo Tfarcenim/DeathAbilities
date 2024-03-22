@@ -17,10 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tfar.deathabilities.ducks.AreaEffectCloudDuck;
-import tfar.deathabilities.ducks.EnderDragonDuck;
-import tfar.deathabilities.ducks.MobEntityDuck;
-import tfar.deathabilities.ducks.PlayerDuck;
+import tfar.deathabilities.ducks.*;
 import tfar.deathabilities.init.ModBlocks;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
@@ -51,6 +48,12 @@ public class DeathAbilities {
         //Services.PLATFORM.superRegister(ModCreativeTabs.class, BuiltInRegistries.CREATIVE_MODE_TAB, CreativeModeTab.class);
         //Services.PLATFORM.superRegister(ModEnchantments.class, BuiltInRegistries.ENCHANTMENT, Enchantment.class);
         Services.PLATFORM.superRegister(ModEntityTypes.class, BuiltInRegistries.ENTITY_TYPE, EntityType.class);
+    }
+
+    public static void onTrack(ServerPlayer player,Entity entity) {
+        if (entity instanceof ClientSyncable clientSyncable) {
+            clientSyncable.syncToTracking();//could sync to only this player instead of everyone
+        }
     }
 
     public static void onClone(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean wasDeath) {

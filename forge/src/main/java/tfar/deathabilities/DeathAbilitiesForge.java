@@ -58,11 +58,16 @@ public class DeathAbilitiesForge {
         MinecraftForge.EVENT_BUS.addListener(this::entityJoinWorld);
         MinecraftForge.EVENT_BUS.addListener(this::changeTarget);
         MinecraftForge.EVENT_BUS.addListener(this::onClone);
+        MinecraftForge.EVENT_BUS.addListener(this::onTrack);
         if (Services.PLATFORM.isPhysicalClient()) {
             DeathAbilitiesClientForge.events(bus);
         }
         // Use Forge to bootstrap the Common mod.
         DeathAbilities.init();
+    }
+
+    private void onTrack(PlayerEvent.StartTracking event) {
+        DeathAbilities.onTrack((ServerPlayer) event.getEntity(),event.getTarget());
     }
 
     private void onClone(PlayerEvent.Clone event) {

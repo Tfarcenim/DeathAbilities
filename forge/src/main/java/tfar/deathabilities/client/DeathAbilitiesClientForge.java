@@ -6,14 +6,17 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.SquidRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import tfar.deathabilities.client.renderer.LightningBoltRenderer;
 import tfar.deathabilities.client.renderer.LightningVexRenderer;
 import tfar.deathabilities.client.renderer.SandfishRenderer;
+import tfar.deathabilities.ducks.PlayerDuck;
 import tfar.deathabilities.entity.DolphinWithLegsEntityGeo;
 import tfar.deathabilities.init.ModEntityTypes;
 
@@ -24,12 +27,23 @@ public class DeathAbilitiesClientForge {
         bus.addListener(DeathAbilitiesClientForge::keybinds);
 
         MinecraftForge.EVENT_BUS.addListener(DeathAbilitiesClientForge::clientTick);
+        MinecraftForge.EVENT_BUS.addListener(DeathAbilitiesClientForge::playerRender);
     }
 
     private static void clientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
             DeathAbilitiesClient.keyPressed();
         }
+    }
+
+    private static void playerRender(RenderPlayerEvent.Pre event) {
+        Player player = event.getEntity();
+        PlayerDuck playerDuck = PlayerDuck.of(player);
+
+        if (playerDuck.isFireMist()) {
+            event.setCanceled(true);
+        }
+
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

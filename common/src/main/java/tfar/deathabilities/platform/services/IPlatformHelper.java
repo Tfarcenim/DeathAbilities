@@ -46,6 +46,8 @@ public interface IPlatformHelper {
 
     void sendToClient(S2CModPacket msg, ServerPlayer player);
     void sendToTrackingClients(S2CModPacket msg, Entity entity);
+    void sendToTrackingClientsAndSelf(S2CModPacket msg, Entity entity);
+
     void sendToServer(C2SModPacket msg);
 
 

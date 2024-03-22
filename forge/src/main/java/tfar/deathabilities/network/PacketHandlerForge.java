@@ -34,6 +34,13 @@ public class PacketHandlerForge {
                 S2CSyncDragonAbilityPacket::new,
                 wrapS2C());
 
+        INSTANCE.registerMessage(i++,
+                S2CSyncPlayerFireMistPacket.class,
+                S2CSyncPlayerFireMistPacket::write,
+                S2CSyncPlayerFireMistPacket::new,
+                wrapS2C());
+
+
         //client to server
 
         INSTANCE.registerMessage(i++,

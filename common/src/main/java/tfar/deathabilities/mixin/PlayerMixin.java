@@ -15,11 +15,13 @@ import tfar.deathabilities.ducks.PlayerDuck;
 public class PlayerMixin implements PlayerDuck {
 
     private PlayerDeathAbilities playerDeathAbilities = new PlayerDeathAbilities();
+    private boolean fireMist;
 
     @Inject(method = "addAdditionalSaveData",at = @At("RETURN"))
     private void addExtra(CompoundTag tag, CallbackInfo ci) {
         PlayerDeathAbilities ability = getDeathAbilities();
         tag.put(DeathAbilities.MOD_ID,ability.serialize());
+        tag.putBoolean("fire_mist",fireMist);
     }
 
     @Inject(method = "readAdditionalSaveData",at = @At("RETURN"))
@@ -27,6 +29,7 @@ public class PlayerMixin implements PlayerDuck {
         if (tag.contains(DeathAbilities.MOD_ID, Tag.TAG_INT_ARRAY)) {
             setDeathAbilities(PlayerDeathAbilities.deserialize(tag.getIntArray(DeathAbilities.MOD_ID)));
         }
+        fireMist = tag.getBoolean("fire_mist");
     }
 
 
@@ -39,5 +42,16 @@ public class PlayerMixin implements PlayerDuck {
     @Override
     public void setDeathAbilities(PlayerDeathAbilities playerDeathAbilities) {
         this.playerDeathAbilities = playerDeathAbilities;
+    }
+
+    @Override
+    public void setFireMist(boolean mist) {
+        fireMist = mist;
+        syncToTracking();
+    }
+
+    @Override
+    public boolean isFireMist() {
+        return fireMist;
     }
 }

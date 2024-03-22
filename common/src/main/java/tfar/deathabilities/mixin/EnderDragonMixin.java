@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tfar.deathabilities.DeathAbilities;
 import tfar.deathabilities.DeathAbility;
 import tfar.deathabilities.ducks.EnderDragonDuck;
-import tfar.deathabilities.network.S2CSyncDragonAbilityPacket;
-import tfar.deathabilities.platform.Services;
 
 @Mixin(EnderDragon.class)
 public abstract class EnderDragonMixin extends LivingEntity implements EnderDragonDuck {
@@ -53,8 +51,9 @@ public abstract class EnderDragonMixin extends LivingEntity implements EnderDrag
     @Override
     public void setPhase(DeathAbility deathAbility) {
         phase = deathAbility;
-        if (!this.level().isClientSide)
-            Services.PLATFORM.sendToTrackingClients(new S2CSyncDragonAbilityPacket(this,phase), this);
+        if (!this.level().isClientSide) {
+            syncToTracking();
+        }
     }
 
     @Inject(method = "addAdditionalSaveData",at = @At("RETURN"))

@@ -91,6 +91,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public void sendToTrackingClientsAndSelf(S2CModPacket msg, Entity entity) {
+        PacketHandlerForge.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),msg);
+    }
+
+    @Override
     public void sendToServer(C2SModPacket msg) {
         PacketHandlerForge.sendToServer(msg);
     }

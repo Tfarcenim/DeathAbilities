@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import tfar.deathabilities.ducks.PlayerDuck;
 import tfar.deathabilities.entity.AttackSquid;
 import tfar.deathabilities.entity.SandFishEntity;
 import tfar.deathabilities.init.ModEntityTypes;
@@ -55,6 +56,10 @@ public enum KeyAction {
         List<Player> nearbyPlayers = player.level().getNearbyPlayers(targetingConditions,player,player.getBoundingBox().inflate(r));
         nearbyPlayers.forEach(player1 -> player1.addEffect(new MobEffectInstance(MobEffects.GLOWING,20 * 60)));
 
+    }),
+    FIRE_MIST_TOGGLE(DeathAbility.fire, player -> {
+        PlayerDuck playerDuck = PlayerDuck.of(player);
+        playerDuck.toggleFireMist();
     })
     ;
 
