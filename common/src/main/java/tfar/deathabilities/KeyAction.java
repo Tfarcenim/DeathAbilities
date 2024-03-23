@@ -6,15 +6,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import tfar.deathabilities.ducks.LivingEntityDuck;
 import tfar.deathabilities.ducks.PlayerDuck;
 import tfar.deathabilities.entity.AttackSquid;
 import tfar.deathabilities.entity.SandFishEntity;
 import tfar.deathabilities.init.ModEntityTypes;
+import tfar.deathabilities.network.S2CDropMobPacket;
+import tfar.deathabilities.network.S2CPickupMobPacket;
+import tfar.deathabilities.platform.Services;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -60,6 +66,24 @@ public enum KeyAction {
     FIRE_MIST_TOGGLE(DeathAbility.fire, player -> {
         PlayerDuck playerDuck = PlayerDuck.of(player);
         playerDuck.toggleFireMist();
+    }),
+    PICKUP_MOB(DeathAbility.fire,player -> {
+
+        if (player.getPassengers().isEmpty()) {
+            DeathAbilities.rayTrace(player, 5).ifPresent(entity -> {
+                entity.startRiding(player);
+                Services.PLATFORM.sendToClient(new S2CPickupMobPacket(entity), player);
+            });
+        } else {
+            Entity passenger = player.getFirstPassenger();
+            passenger.stopRiding();
+            passenger.addDeltaMovement(player.getLookAngle());
+            if (passenger instanceof LivingEntity livingPassenger) {
+                LivingEntityDuck livingEntityDuck = LivingEntityDuck.of(livingPassenger);
+                livingEntityDuck.setExplodeOnImpact(true);
+                Services.PLATFORM.sendToClient(new S2CDropMobPacket(),player);
+            }
+        }
     })
     ;
 

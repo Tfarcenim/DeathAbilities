@@ -5,8 +5,12 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.SquidRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -42,8 +46,16 @@ public class DeathAbilitiesClientForge {
 
         if (playerDuck.isFireMist()) {
             event.setCanceled(true);
+            for (int i = 0; i < 4;i++) {
+                RandomSource randomSource = player.getRandom();
+                AABB aabb = player.getBoundingBox();
+                double offsetX = aabb.getXsize() * (randomSource.nextDouble() - .5);
+                double offsetY = aabb.getYsize() * randomSource.nextDouble();
+                double offsetZ = aabb.getZsize() * (randomSource.nextDouble() - .5);
+                Vec3 pos = player.position();
+                player.level().addParticle(ParticleTypes.FLAME,pos.x + offsetX,pos.y+offsetY,pos.z+offsetZ,0,0,0);
+            }
         }
-
     }
 
     private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

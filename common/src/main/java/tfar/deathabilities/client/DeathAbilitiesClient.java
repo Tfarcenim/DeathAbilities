@@ -26,11 +26,11 @@ public class DeathAbilitiesClient {
         registerKeybind(KeyAction.SPAWN_SANDFISH, ModKeybinds.SPAWN_SANDFISH);
         registerKeybind(KeyAction.SPAWN_ATTACK_SQUID, ModKeybinds.SPAWN_ATTACK_SQUID);
         registerKeybind(KeyAction.FIRE_MIST_TOGGLE, ModKeybinds.FIRE_MIST_TOGGLE);
-
+        registerKeybind(KeyAction.PICKUP_MOB,ModKeybinds.PICKUP_MOB);
     }
 
     private static void registerKeybind(KeyAction action, KeyMapping keyMapping) {
-        ArrayUtils.add(Minecraft.getInstance().options.keyMappings, keyMapping);
+        Minecraft.getInstance().options.keyMappings = ArrayUtils.add(Minecraft.getInstance().options.keyMappings, keyMapping);
         map.put(action, keyMapping);
     }
 

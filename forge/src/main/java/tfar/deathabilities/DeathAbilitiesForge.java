@@ -14,9 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -53,12 +51,14 @@ public class DeathAbilitiesForge {
         bus.addListener(Datagen::gather);
         bus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, this::onDeath);
+        MinecraftForge.EVENT_BUS.addListener(this::onAttack);
         MinecraftForge.EVENT_BUS.addListener(this::onDamage);
         MinecraftForge.EVENT_BUS.addListener(this::commands);
         MinecraftForge.EVENT_BUS.addListener(this::entityJoinWorld);
         MinecraftForge.EVENT_BUS.addListener(this::changeTarget);
         MinecraftForge.EVENT_BUS.addListener(this::onClone);
         MinecraftForge.EVENT_BUS.addListener(this::onTrack);
+        MinecraftForge.EVENT_BUS.addListener(this::onFall);
         if (Services.PLATFORM.isPhysicalClient()) {
             DeathAbilitiesClientForge.events(bus);
         }
@@ -66,6 +66,9 @@ public class DeathAbilitiesForge {
         DeathAbilities.init();
     }
 
+    private void onFall(LivingFallEvent event) {
+        DeathAbilities.onFall(event.getEntity());
+    }
     private void onTrack(PlayerEvent.StartTracking event) {
         DeathAbilities.onTrack((ServerPlayer) event.getEntity(),event.getTarget());
     }
@@ -113,6 +116,13 @@ public class DeathAbilitiesForge {
     }
     private void commonSetup(FMLCommonSetupEvent event) {
         PacketHandlerForge.registerMessages();
+    }
+
+    private void onAttack(LivingAttackEvent event) {
+        boolean cancel = DeathAbilities.onAttack(event.getSource(),event.getEntity(),event.getAmount());
+        if (cancel) {
+            event.setCanceled(true);
+        }
     }
 
     private void onDamage(LivingDamageEvent event) {

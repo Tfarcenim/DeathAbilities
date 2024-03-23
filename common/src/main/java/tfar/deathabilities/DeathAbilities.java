@@ -4,6 +4,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,9 +12,13 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +30,7 @@ import tfar.deathabilities.init.ModMobEffects;
 import tfar.deathabilities.platform.Services;
 
 import java.util.List;
+import java.util.Optional;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -67,10 +73,22 @@ public class DeathAbilities {
         }
     }
 
+    public static boolean onAttack(DamageSource source, LivingEntity living, float damage) {
+        if (living instanceof ServerPlayer player && source.is(DamageTypeTags.IS_FIRE)) {
+            PlayerDuck playerDuck = PlayerDuck.of(player);
+            if (playerDuck.isFireMist()) {
+                player.heal(damage);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void onDamage(DamageSource source, LivingEntity living, float damage) {
         Entity attacker = source.getEntity();
         if (attacker instanceof Player player) {
-            PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
+            PlayerDuck playerDuck = PlayerDuck.of(player);
+            PlayerDeathAbilities playerDeathAbilities = playerDuck.getDeathAbilities();
             if (playerDeathAbilities.isEnabled(DeathAbility.lightning) && player.getMainHandItem().is(Items.LIGHTNING_ROD)) {
                 if (living instanceof Mob mob) {
                     MobEntityDuck.of(mob).setTargetHunters(true);
@@ -85,7 +103,6 @@ public class DeathAbilities {
             EnderDragonDuck enderDragonDuck = EnderDragonDuck.of(enderDragon);
             enderDragonDuck.addDamage(damage);
         }
-
     }
 
     public static boolean onDeath(DamageSource source, LivingEntity living) {
@@ -143,6 +160,31 @@ public class DeathAbilities {
                     }
                 }
             }
+        }
+    }
+
+    public static Optional<Entity> rayTrace(LivingEntity living,float distance) {
+        if (living != null) {
+            
+            Vec3 vec3 = living.getEyePosition(0);
+            double d1 = distance * distance;
+
+            Vec3 vec31 = living.getViewVector(1.0F);
+            Vec3 vec32 = vec3.add(vec31.x * distance, vec31.y * distance, vec31.z * distance);
+            AABB aabb = living.getBoundingBox().expandTowards(vec31.scale(distance)).inflate(1.0D, 1.0D, 1.0D);
+            EntityHitResult entityhitresult = ProjectileUtil.getEntityHitResult(living, vec3, vec32, aabb, (entity) -> {
+                return !entity.isSpectator() && entity.isPickable();
+            }, d1);
+            return Optional.of(entityhitresult.getEntity());
+        }
+        return Optional.empty();
+    }
+
+    public static void onFall(LivingEntity living) {
+        LivingEntityDuck livingEntityDuck = LivingEntityDuck.of(living);
+        if (livingEntityDuck.explodeOnImpact()) {
+            livingEntityDuck.setExplodeOnImpact(false);
+            living.level().explode(living, living.getX(), living.getY(), living.getZ(), 3, true, Level.ExplosionInteraction.MOB);
         }
     }
 }

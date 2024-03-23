@@ -8,6 +8,7 @@
     "AreaEffectCloudMixin",
     "DragonSittingFlamingPhaseMixin",
     "EnderDragonMixin",
+    "LivingEntityMixin",
     "MobEntityMixin",
     "PlayerMixin"
   ],

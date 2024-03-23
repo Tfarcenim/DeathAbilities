@@ -4,3 +4,4 @@ accessible method net/minecraft/client/renderer/entity/EntityRenderers register 
 accessible field net/minecraft/world/entity/Entity ENTITY_COUNTER Ljava/util/concurrent/atomic/AtomicInteger;
 
 accessible method net/minecraft/world/entity/animal/Squid spawnInk ()V
+mutable field net/minecraft/client/Options keyMappings [Lnet/minecraft/client/KeyMapping;

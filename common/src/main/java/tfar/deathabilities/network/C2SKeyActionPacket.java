@@ -4,6 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import tfar.deathabilities.DeathAbilities;
+import tfar.deathabilities.HunterData;
 import tfar.deathabilities.KeyAction;
 import tfar.deathabilities.PlayerDeathAbilities;
 import tfar.deathabilities.ducks.PlayerDuck;
@@ -30,7 +31,9 @@ public class C2SKeyActionPacket implements C2SModPacket{
     public void handleServer(ServerPlayer player) {
         PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
         if (playerDeathAbilities.isEnabled(action.ability)) {
-            action.runner_activate.accept(player);
+            if (player.getUUID().equals(HunterData.runner)) {
+                action.runner_activate.accept(player);
+            }
         }
     }
 

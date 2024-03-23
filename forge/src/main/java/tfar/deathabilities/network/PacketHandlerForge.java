@@ -40,6 +40,18 @@ public class PacketHandlerForge {
                 S2CSyncPlayerFireMistPacket::new,
                 wrapS2C());
 
+        INSTANCE.registerMessage(i++,
+                S2CPickupMobPacket.class,
+                S2CPickupMobPacket::write,
+                S2CPickupMobPacket::new,
+                wrapS2C());
+
+        INSTANCE.registerMessage(i++,
+                S2CDropMobPacket.class,
+                S2CDropMobPacket::write,
+                S2CDropMobPacket::new,
+                wrapS2C());
+
 
         //client to server
 

@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.codehaus.plexus.util.StringUtils;
 import tfar.deathabilities.DeathAbilities;
+import tfar.deathabilities.client.ModKeybinds;
 import tfar.deathabilities.init.ModBlocks;
 import tfar.deathabilities.init.ModEntityTypes;
 import tfar.deathabilities.init.ModItems;
@@ -42,7 +43,7 @@ public class ModLangProvider extends LanguageProvider {
         addEntityType(() -> ModEntityTypes.FIRE_DRAGON_FIREBALL,"Fire Dragon Fireball");
         addEntityType(() -> ModEntityTypes.ATTACK_SQUID,"Attack Squid");
 
-
+        add(ModKeybinds.CATEGORY,"Death Abilities");
     }
 
 
