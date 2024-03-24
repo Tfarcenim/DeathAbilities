@@ -55,8 +55,9 @@ public interface IPlatformHelper {
 
     EntityType<? extends DolphinWithLegsEntity> getType();
 
-
-    boolean postMobGriefingEvent();
+    //pehkui helpers
+    void scalePlayer(ServerPlayer player,float scale);
+    void resetScale(ServerPlayer player);
 
 
 }

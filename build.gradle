@@ -10,7 +10,7 @@ subprojects {
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
     java.withSourcesJar()
-    java.withJavadocJar()
+  //  java.withJavadocJar()
         
     jar {
         from(rootProject.file("LICENSE")) {
@@ -79,7 +79,8 @@ subprojects {
                 "mod_author": mod_author,
                 "mod_id": mod_id,
                 "license": license,
-                "description": project.description
+                "description": project.description,
+                "geckolib_version_range": geckolib_version_range
         ]
 
         filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', '*.mixins.json']) {

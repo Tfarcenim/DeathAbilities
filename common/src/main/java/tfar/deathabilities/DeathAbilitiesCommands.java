@@ -12,6 +12,7 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 import tfar.deathabilities.ducks.PlayerDuck;
 import tfar.deathabilities.network.S2CActivateItemPacket;
+import tfar.deathabilities.network.S2CSetHunterPacket;
 import tfar.deathabilities.platform.Services;
 
 import java.util.Collection;
@@ -37,6 +38,7 @@ public class DeathAbilitiesCommands {
     private static int setRunner(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
         ServerPlayer player = EntityArgument.getPlayer(commandContext, "player");
         HunterData.runner = player.getUUID();
+        Services.PLATFORM.sendToClient(new S2CSetHunterPacket(true),player);
         return 1;
     }
 

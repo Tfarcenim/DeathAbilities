@@ -77,7 +77,9 @@ public class DeathAbilities {
         if (living instanceof ServerPlayer player && source.is(DamageTypeTags.IS_FIRE)) {
             PlayerDuck playerDuck = PlayerDuck.of(player);
             if (playerDuck.isFireMist()) {
-                player.heal(damage);
+                if (player.getUUID().equals(HunterData.runner)) {
+                    player.heal(damage);
+                }
                 return true;
             }
         }
@@ -95,6 +97,10 @@ public class DeathAbilities {
                     if (mob.getTarget() == player) {
                         mob.setTarget(null);
                     }
+                }
+            } else if (playerDeathAbilities.isEnabled(DeathAbility.fire)) {
+                if (!player.getUUID().equals(HunterData.runner)) {
+                    living.setSecondsOnFire(5);
                 }
             }
         }

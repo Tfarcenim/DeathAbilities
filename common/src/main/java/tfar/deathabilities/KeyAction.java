@@ -29,7 +29,7 @@ public enum KeyAction {
     SPAWN_SANDFISH(DeathAbility.earth, player -> {
         BlockHitResult hitResult = (BlockHitResult) player.pick(24,0,false);
         SandFishEntity sandFishEntity = ModEntityTypes.SANDFISH.spawn(player.serverLevel(),hitResult.getBlockPos().relative(hitResult.getDirection()), MobSpawnType.COMMAND);
-    }),
+    }, true),
     SPAWN_ATTACK_SQUID(DeathAbility.water,player -> {
 
         for (int y = 0 ; y < 2;y++) {
@@ -62,11 +62,11 @@ public enum KeyAction {
         List<Player> nearbyPlayers = player.level().getNearbyPlayers(targetingConditions,player,player.getBoundingBox().inflate(r));
         nearbyPlayers.forEach(player1 -> player1.addEffect(new MobEffectInstance(MobEffects.GLOWING,20 * 60)));
 
-    }),
+    }, true),
     FIRE_MIST_TOGGLE(DeathAbility.fire, player -> {
         PlayerDuck playerDuck = PlayerDuck.of(player);
         playerDuck.toggleFireMist();
-    }),
+    }, true),
     PICKUP_MOB(DeathAbility.fire,player -> {
 
         if (player.getPassengers().isEmpty()) {
@@ -84,15 +84,32 @@ public enum KeyAction {
                 Services.PLATFORM.sendToClient(new S2CDropMobPacket(),player);
             }
         }
-    })
+    }, true),
+    BLAZING_TRAIL_TOGGLE(DeathAbility.fire, player -> {
+        PlayerDuck playerDuck = PlayerDuck.of(player);
+
+        boolean wasActive = playerDuck.isFireMist();
+
+        playerDuck.toggleFireMist();
+        if (wasActive) {
+            Services.PLATFORM.resetScale(player);
+            player.removeEffect(MobEffects.FIRE_RESISTANCE);
+        } else {
+            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 1,false,false));
+            player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,-1,0,false,false));
+            Services.PLATFORM.scalePlayer(player, 2 / 3f);
+        }
+
+    },false)
     ;
 
     public final DeathAbility ability;
-    public final Consumer<ServerPlayer> runner_activate;
+    public final Consumer<ServerPlayer> activate;
+    public final boolean hunter;
 
-    KeyAction(DeathAbility ability, Consumer<ServerPlayer> runner_activate) {
-
+    KeyAction(DeathAbility ability, Consumer<ServerPlayer> activate,boolean hunter) {
         this.ability = ability;
-        this.runner_activate = runner_activate;
+        this.activate = activate;
+        this.hunter = hunter;
     }
 }

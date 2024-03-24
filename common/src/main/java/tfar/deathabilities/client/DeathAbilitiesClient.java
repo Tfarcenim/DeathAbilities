@@ -21,12 +21,14 @@ import java.util.Map;
 public class DeathAbilitiesClient {
 
     private static final EnumMap<KeyAction, KeyMapping> map = new EnumMap<>(KeyAction.class);
+    public static boolean hunter;
 
     public static void registerKeybinds() {
         registerKeybind(KeyAction.SPAWN_SANDFISH, ModKeybinds.SPAWN_SANDFISH);
         registerKeybind(KeyAction.SPAWN_ATTACK_SQUID, ModKeybinds.SPAWN_ATTACK_SQUID);
         registerKeybind(KeyAction.FIRE_MIST_TOGGLE, ModKeybinds.FIRE_MIST_TOGGLE);
         registerKeybind(KeyAction.PICKUP_MOB,ModKeybinds.PICKUP_MOB);
+        registerKeybind(KeyAction.BLAZING_TRAIL_TOGGLE,ModKeybinds.FIRE_TRAIL_TOGGLE);
     }
 
     private static void registerKeybind(KeyAction action, KeyMapping keyMapping) {
@@ -39,7 +41,8 @@ public class DeathAbilitiesClient {
         if (player != null) {
             for (Map.Entry<KeyAction, KeyMapping> entry : map.entrySet()) {
                 KeyAction action = entry.getKey();
-                if (entry.getValue().consumeClick()) {
+                KeyMapping mapping = entry.getValue();
+                if (action.hunter == hunter && mapping.consumeClick()) {
                     Services.PLATFORM.sendToServer(new C2SKeyActionPacket(action));
                     return;
                 }

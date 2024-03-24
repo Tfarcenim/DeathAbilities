@@ -52,6 +52,12 @@ public class PacketHandlerForge {
                 S2CDropMobPacket::new,
                 wrapS2C());
 
+        INSTANCE.registerMessage(i++,
+                S2CSetHunterPacket.class,
+                S2CSetHunterPacket::write,
+                S2CSetHunterPacket::new,
+                wrapS2C());
+
 
         //client to server
 

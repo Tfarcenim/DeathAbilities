@@ -17,6 +17,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import tfar.deathabilities.HunterData;
 import tfar.deathabilities.client.renderer.LightningBoltRenderer;
 import tfar.deathabilities.client.renderer.LightningVexRenderer;
 import tfar.deathabilities.client.renderer.SandfishRenderer;
@@ -45,15 +46,28 @@ public class DeathAbilitiesClientForge {
         PlayerDuck playerDuck = PlayerDuck.of(player);
 
         if (playerDuck.isFireMist()) {
-            event.setCanceled(true);
-            for (int i = 0; i < 4;i++) {
-                RandomSource randomSource = player.getRandom();
-                AABB aabb = player.getBoundingBox();
-                double offsetX = aabb.getXsize() * (randomSource.nextDouble() - .5);
-                double offsetY = aabb.getYsize() * randomSource.nextDouble();
-                double offsetZ = aabb.getZsize() * (randomSource.nextDouble() - .5);
-                Vec3 pos = player.position();
-                player.level().addParticle(ParticleTypes.FLAME,pos.x + offsetX,pos.y+offsetY,pos.z+offsetZ,0,0,0);
+
+            if (player.getUUID().equals(HunterData.runner)) {
+                event.setCanceled(true);
+                for (int i = 0; i < 4; i++) {
+                    RandomSource randomSource = player.getRandom();
+                    AABB aabb = player.getBoundingBox();
+                    double offsetX = aabb.getXsize() * (randomSource.nextDouble() - .5);
+                    double offsetY = aabb.getYsize() * randomSource.nextDouble();
+                    double offsetZ = aabb.getZsize() * (randomSource.nextDouble() - .5);
+                    Vec3 pos = player.position();
+                    player.level().addParticle(ParticleTypes.FLAME, pos.x + offsetX, pos.y + offsetY, pos.z + offsetZ, 0, 0, 0);
+                }
+            } else {
+                for (int i = 0; i < 2; i++) {
+                    RandomSource randomSource = player.getRandom();
+                    AABB aabb = player.getBoundingBox();
+                    double offsetX = aabb.getXsize() * (randomSource.nextDouble() - .5);
+                    double offsetY = 0;
+                    double offsetZ = aabb.getZsize() * (randomSource.nextDouble() - .5);
+                    Vec3 pos = player.position();
+                    player.level().addParticle(ParticleTypes.FLAME, pos.x + offsetX, pos.y + offsetY, pos.z + offsetZ, 0, 0, 0);
+                }
             }
         }
     }

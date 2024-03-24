@@ -31,8 +31,9 @@ public class C2SKeyActionPacket implements C2SModPacket{
     public void handleServer(ServerPlayer player) {
         PlayerDeathAbilities playerDeathAbilities = PlayerDuck.of(player).getDeathAbilities();
         if (playerDeathAbilities.isEnabled(action.ability)) {
-            if (player.getUUID().equals(HunterData.runner)) {
-                action.runner_activate.accept(player);
+            boolean isHunter = player.getUUID().equals(HunterData.runner);
+            if (isHunter == action.hunter) {
+                action.activate.accept(player);
             }
         }
     }

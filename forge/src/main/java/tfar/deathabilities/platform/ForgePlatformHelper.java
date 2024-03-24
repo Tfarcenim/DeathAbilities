@@ -20,6 +20,8 @@ import tfar.deathabilities.network.S2CModPacket;
 import tfar.deathabilities.platform.services.IPlatformHelper;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
+import virtuoel.pehkui.api.ScaleData;
+import virtuoel.pehkui.api.ScaleTypes;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -70,10 +72,6 @@ public class ForgePlatformHelper implements IPlatformHelper {
                 .sized(1,1.75f).build("");
     }
 
-    @Override
-    public boolean postMobGriefingEvent() {
-        return false;
-    }
 
     @Override
     public boolean isPhysicalClient() {
@@ -100,4 +98,16 @@ public class ForgePlatformHelper implements IPlatformHelper {
         PacketHandlerForge.sendToServer(msg);
     }
 
+    @Override
+    public void scalePlayer(ServerPlayer player, float scale) {
+        final ScaleData scaleData = ScaleTypes.BASE.getScaleData(player);
+        scaleData.setScaleTickDelay(10);
+        scaleData.setTargetScale(scaleData.getTargetScale() * scale);
+    }
+
+    @Override
+    public void resetScale(ServerPlayer player) {
+        final ScaleData scaleData = ScaleTypes.BASE.getScaleData(player);
+        scaleData.resetScale();
+    }
 }
