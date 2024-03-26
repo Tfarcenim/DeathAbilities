@@ -1,10 +1,10 @@
 package tfar.deathabilities.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import tfar.deathabilities.DeathAbilities;
+import tfar.deathabilities.client.DeathAbilitiesClient;
 
 public class S2CPickupMobPacket extends S2CEntityDataPacket {
 
@@ -32,7 +32,7 @@ public class S2CPickupMobPacket extends S2CEntityDataPacket {
     public void handleClient() {
         Entity entity = getEntity();
         if (entity != null) {
-            entity.startRiding(Minecraft.getInstance().player);
+            entity.startRiding(DeathAbilitiesClient.getClientPlayer());
         }
     }
 }

@@ -91,4 +91,9 @@ public class DeathAbilitiesClient {
         return null;
     }
 
+    public static Player getClientPlayer() {
+        return Minecraft.getInstance().player;
+    }
+
+
 }
